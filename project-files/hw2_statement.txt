@@ -1,0 +1,252 @@
+The goal of this assignment is to implement a new Round-Robin (RR) scheduling policy, which will operate alongside the existing Linux scheduler policies.
+
+Introduction
+Broadly speaking, the scheduling problem can be expressed as follows: “Given k tasks ready to run in a system with N available processors, which task should be dispatched to which processor at any given point in time?”
+
+The quantitative goals of a solution to the scheduling problem include minimizing the system’s average completion and response time for all tasks, as well as maximizing the system’s throughput (i.e., the total number of tasks completed in a unit of time). Additionally, the qualitative goals of a solution to the scheduling problem usually include ensuring fairness so that all tasks receive a similar share of available processors’ time, as well as imposing an upper bound on the maximum response time (perceived as lag) any task may experience.
+
+Although the scheduling problem seems trivial to reduce to many well-known theoretical problems (e.g., the bin-packing problem)—which have been studied for decades and have good heuristic-based solutions—in practice, its dynamic nature on live systems, where tasks arrive in an a-priori unknown manner, makes it difficult to derive a good generic solution.
+
+“And you have to realize that there are not very many things that have aged as well as the scheduler. Which is just another proof that scheduling is easy.”
+
+–Linus Torvald, 2001.
+
+Yet, twenty-four years later, the Linux kernel began transitioning from its default Completely Fair Scheduler (CFS) contributed by Ingo Molnar in 2007, to a new scheduling policy called the “Earliest Eligible Virtual Deadline First” (EEVDF). Notably, the latter was introduced by Ion Stoica and Hussein Abdel-Wahab, back in 1995.
+
+The Linux scheduler
+The Linux scheduler is a hierarchical scheduler with a few distinct scheduler classes, each of which with its own precedence over others.
+
+Conceptually, each individual scheduler class is a different scheduler that takes precedence over all other lower-priority schedulers. Furthermore, internally, each scheduler class may implement more than one scheduling policies, such as SCHED_RR or SCHED_FIFO defined in the POSIX realtime extensions addendum, and implemented in the Linux kernel as part of the real-time scheduling class.
+
+All user tasks, by default, are considered for scheduling decisions by the CSF/EEVDF scheduler class, which implements two policies: SCHED_NORMAL and SCHED_BATCH. However, the syscall sched_setscheduler (see detailed description here) can be used by users who wish to selectively assign an alternative available scheduling policy for their tasks.
+
+To get better clarity on how each Linux scheduler class takes precedence over others, see the macro for_each_active_class used in the pick_next_task method to hierarchically iterate over all available scheduler classes.
+
+Group Round-Robin (GRR)
+Typical round-robin scheduling treats all tasks equally, but there may be times where it is desirable to treat a group of tasks with “preference” over others.
+
+In this assignment, you will extend the list of the available Linux kernel scheduler classes to include a new Group Round-Robin (GRR) scheduler class, called sched_grr_class.
+
+The new scheduler class will implement the SCHED_GRR scheduling policy, and it must operate alongside the pre-existing Linux scheduler classes, as follows: (i) Only tasks whose policy is SCHED_GRR must be considered for selection by sched_grr_class; (ii) Tasks using the SCHED_GRR policy must take precedence over tasks using the SCHED_NORMAL policy; (iii) Tasks using the SCHED_GRR policy must not take precedence over tasks using the SCHED_RR or SCHED_FIFO policies, of the real-time scheduling class.
+
+The new scheduler class must serve as the default scheduler class of the init task, and the value of SCHED_GRR must be defined in include/uapi/linux/sched.h to be 8.
+
+Finally, the sched_grr_class must be fully Symmetric MultiProcessor (SMP) capable, meaning all available cores in your system must be utilized accordingly, and it must also be the default scheduler class for kernel-level threads.
+
+Implementing a SCHED_GRR policy (90%)
+Unlike typical RR scheduling policies that treat all tasks equally, the GRR scheduling policy will introduce the inheritable notion of two disjoint scheduling groups: a “default” group, where tasks belong to by default (use #define GRR_DEFAULT 1 for it), and a “performance” group, where tasks can be selectively assigned to (use #define GRR_PERFORMANCE 2 for it).
+
+To add support for the new SCHED_GRR policy you will have to implement a set of kernel-internal interfaces each Linux scheduler class is required to implement (discussed later), as well as two new system calls: (a) sched_assign_ncores_to_group, which will allow alternating the number of allocated CPU cores to a group; and (b) sched_assign_process_to_group, which will allow moving processes between groups.
+
+/* 
+ * This system call will assign "ncores" CPU cores 
+ * to the given "group", and the remaining CPU cores
+ * to the other group.
+ *
+ * Its number must be 467; and its return value must be 0 on success,
+ * or an error code indicating the respective error, if one occurs.
+ *
+ */
+int sched_assign_ncores_to_group(int ncores, int group);
+
+/* 
+ * This system call will assign the process with "pid" to
+ * to the given "group", and move all its tasks accordingly.
+ *
+ * Its number must be 468; and its return value must be 0 on success,
+ * or an error code indicating the respective error, if one occurs.
+ *
+ */
+int sched_assign_process_to_group(pid_t pid, int group);
+
+Both system calls must be implemented in kernel/sched/core.c, only the administrator (root user) must be able to use them to adjust processes and CPU cores assigned on each group, and any errors (e.g., assigning zero or negative CPU cores to any of the groups) must be handled appropriately.
+
+At the beginning, by default, 50% of the available CPU cores in the system must be allocated to each group: The first 50% of CPU cores (in increasing CPU number) must be assigned to the group GRR_DEFAULT, and the remaining 50% of CPU cores (in increasing CPU number) must be assigned to the group GRR_PERFORMANCE. For the case of SMP systems, at least one CPU core must always be assigned to each group; while, for the case of uniprocessor systems, the same core should be assigned to both groups.
+
+Hopefully, changing the total number of CPU cores allocated to each group, or changing the total number of tasks on each group, must have some measurable impact on the performance experience of the respective groups of tasks. Note, however, that in order to be able to reasonably test the desired behavior on a multicore system, you will need a VM with at least 4 CPU cores.
+
+Since changing the total number of CPU cores allocated to a group means that some tasks may need to be migrated away from the CPU cores of the group whose allocated cores were decreased, always select as destination the idlest CPU core (i.e., the CPU core whose run queue has the lowest total number of tasks) among the cores remaining in the group.
+
+Implementation tips:
+
+You may find it useful to implement two helper functions called find_busiest_cpu_in_group and find_idlest_cpu_in_group.
+
+Since some tasks may have restrictions to run on a particular CPU core, and thus must not be migrated across CPU cores, you may it useful to implement a helper function called can_migrate_task_grr and use it accordingly.
+
+Moving tasks between run queues means that you may need to grab multiple locks at once. Make sure to do so in a deadlock-free manner, and look around to identify how other scheduler classes do this.
+
+Time slice. Every task has the same time slice (quantum), which is 100ms, and when a task becomes runnable, it should be assigned to the respective group’s CPU core that is the least busy. That is, the CPU core with the shortest runqueue.
+
+Scheduling decisions are group-internal. If there are N tasks on the “default” group and M tasks on the “performance” group, and the “default” group has X CPU cores dedicated to it, whereas the “performance” group has Y CPU cores dedicated to it, then the N tasks will be served by the respective X cores and the M tasks will be served by the remaining Y cores.
+
+Provided that you have implemented a proper GRR scheduling policy, the more cores dedicated to a group, the better the “experience” the respective tasks will have; or alternatively, the less tasks assigned on a group given constant CPU cores, the better the “experience” the respective tasks will have.
+
+Load balancing. Periodic load balancing should be attempted every 500ms for each CPU, such that a single task from the run queue with the highest total number of tasks is moved to the run queue with the lowest total number of tasks—within CPU cores dedicated to the same group.
+
+Take a look at the bottom of the scheduler’s tick function, sched_tick(), for how load balancing for the default scheduler class of a vanilla Linux kernel is performed. You may find it useful to add an invocation to sched_grr_class’s load balancing implementation right after.
+
+sched_grr_class’s load balancing must be implemented as follows:
+
+The task that should be moved is the first eligible task in the run queue, which can be moved without causing the imbalance to reverse.
+
+Tasks that are currently running are not eligible to be moved, and beware that some tasks may have restrictions on which CPU they can be run on.
+
+A core that has nothing to do, must try to steal a task from another core in the same group; and if there is nothing to steal, let the core remain idle.
+
+Testing and demonstration (10%)
+An excellent way to test everything end-to-end is to initiate a fresh build of the Linux kernel with make configured to try to utilize all available cores of your machine, and while the build is taking place use the command ps -eo pid,psr,stat,comm | awk '$3 ~ /^R/' to investigate whether the allocation of tasks on run queues respects the SCHED_GRR defaults.
+
+Are only 50% of the CPU cores used? (It must be, because tasks belong by default to the group GRR_DEFAULT which gets only 50% of the available CPU cores on an SMP system.)
+
+Do you observe changes on the output of the ps -eo pid,psr,stat,comm | awk '$3 ~ /^R/' after using the system call sched_assign_ncores_to_group to increase or decrease the total number of cores allocated to the GRR_DEFAULT group? (Besides using ps, consider also using htop.)
+
+If you use the system call sched_assign_process_to_group to change the group assignment of your login session from the group GRR_DEFAULT to the group GRR_PERFORMANCE while the build is still taking place, do you observe any difference in it being, for example more interactive?
+
+For a more controlled microbenchmark, download our testing suite, see what our code does, run it (make && make test), and observe and discuss the results. The snippet below shows two runs on an 8 core machine.
+
+$ make && make test
+========== GRR DEFAULT GROUP CPUS: 2 | GRR PERFORMANCE GROUP CPUS: 6 ==========
+Daemons are running on cpus: 1, 1, 1, 0, 0, 0
+========== DEFAULT ==========
+Time: 17.724s (thread id: 281473232138656)
+Time: 17.676s (thread id: 281473215230368)
+Time: 18.972s (thread id: 281473240592800)
+Time: 19.297s (thread id: 281473223684512)
+========== PERFORMANCE ==========
+Time: 4.172s (thread id: 281472887615904)
+Time: 4.166s (thread id: 281472879161760)
+Time: 4.571s (thread id: 281472904524192)
+Time: 4.575s (thread id: 281472896070048)
+
+========== GRR DEFAULT GROUP CPUS: 4 | GRR PERFORMANCE GROUP CPUS: 4 ==========
+Daemons are running on cpus: 3, 2, 1, 0, 0, 1
+========== DEFAULT ==========
+Time: 9.212s (thread id: 281472822079904)
+Time: 11.070s (thread id: 281472830534048)
+Time: 12.009s (thread id: 281472805171616)
+Time: 12.136s (thread id: 281472813625760)
+========== PERFORMANCE ==========
+Time: 4.398s (thread id: 281472866120096)
+Time: 4.553s (thread id: 281472857665952)
+Time: 4.526s (thread id: 281472849211808)
+Time: 4.691s (thread id: 281472840757664)
+
+========== GRR DEFAULT GROUP CPUS: 6 | GRR PERFORMANCE GROUP CPUS: 2 ==========
+Daemons are running on cpus: 0, 2, 3, 1, 2, 5
+========== DEFAULT ==========
+Time: 8.672s (thread id: 281472996274592)
+Time: 8.830s (thread id: 281472987820448)
+Time: 10.312s (thread id: 281472970912160)
+Time: 10.534s (thread id: 281472979366304)
+========== PERFORMANCE ==========
+Time: 10.396s (thread id: 281473008595360)
+Time: 10.482s (thread id: 281472983232928)
+Time: 10.524s (thread id: 281473000141216)
+Time: 10.504s (thread id: 281472991687072)
+
+Note that in order to use our test suite as is, you should have a VM configured with 8 CPU cores. Otherwise, you will have to tune accordingly some of the numbers in script.sh to help you obtain meaningful measurements.
+
+Observe how our code in heavy.c synchronizes all the threads to wait for their process to be assigned to the one group or the other via the system call assign_process_to_group. Does your implementation assign_process_to_group work correctly, given the results you get from running our test suite?
+
+Observe how our script uses the system call assing_ncores_to_group to change the CPU core allocation among the two groups. Does your implementation of assign_ncores_to_group work correctly, given the results you get from using our test suite?
+
+Do you see when the runtime experience of the threads belonging to the GRR_PERFORMANCE group remains superior to this of the ones belonging to the GRR_DEFAULT group?
+
+Do you see the load balancing of the daemon processes taking place when the number of CPU cores allocated to their group is increased?
+
+General directions
+The Linux kernel implementation makes assumptions in various places that the only scheduling classes available and used are the ones that have already been defined. You will need to identify those places and make changes to allow your kernel to boot with the new scheduling class in place, assign tasks to it, and have it be used to pick the next task to run.
+
+Where to look?
+
+Since you are making a new scheduler class grr_sched_class, which ought to be used as the new default scheduler class, at the very least, look around for places where the existing default scheduling policy SCHED_NORMAL is referenced. See what the code referencing it does, and modify accordingly.
+
+What to implement?
+
+At a high-level, the Linux scheduler is designed to be pluggable with new scheduler classes, as long as a new scheduler class implements a set of interfaces. All class-specific interface implementations are then pointed to by function pointers, that are invoked by the generic scheduler (mostly, but not only, in core.c) at specific, relevant points according to the precedence of each class versus others.
+
+The idle_sched_class is the simplest scheduler class, implementing SCHED_IDLE policy at kernel/sched/idle.c. In particular, the interfaces implemented by this scheduler class is a good indication of what the minimum set of interfaces is, in order to have an operational scheduler class. See, for example, at the bottom of idle.c, and imagine that the function pointers pointing to idle-class-specific implementations ought to be substituted with the respective grr-class-specific implementations.
+
+/*
+ * Simple, special scheduling class for the per-CPU idle tasks:
+ */
+DEFINE_SCHED_CLASS(idle) = {
+
+        /* no enqueue/yield_task for idle tasks */
+
+        /* dequeue is not valid, we print a debug message there: */
+        .dequeue_task           = dequeue_task_idle,
+
+        .wakeup_preempt         = wakeup_preempt_idle,
+
+        .pick_task              = pick_task_idle,
+        .put_prev_task          = put_prev_task_idle,
+        .set_next_task          = set_next_task_idle,
+
+#ifdef CONFIG_SMP
+        .balance                = balance_idle,
+        .select_task_rq         = select_task_rq_idle,
+        .set_cpus_allowed       = set_cpus_allowed_common,
+#endif
+
+        .task_tick              = task_tick_idle,
+
+        .prio_changed           = prio_changed_idle,
+        .switched_to            = switched_to_idle,
+        .update_curr            = update_curr_idle,
+};
+
+The next simplest scheduler class to look at is, probably, the real-time scheduling class, which spans a few thousand lines of code. For reference, expect that your implementation would be somewhere in between the idle and the rt classes, both in terms of the total number of lines of code as well as conceptual complexity.
+
+Before flooding your code with pr_info and the likes, make a serious effort to understand what the implementations of the above interfaces do in other scheduler classes.
+
+How to move incrementally?
+
+You are strongly advised to define a GRR-specific Kconfig option to allow you to have a CONFIG_GRR_SCHED preprocessor macro, and use it over your implementation to easily enable / disable your additions.
+
+Using such a configuration option not only is useful for helping you move incrementally during early stages of development, but you must also use it at the final patch you will submit to allow the different supported kernel configurations to be compiled accordingly.
+
+For example, here is a suggestion of how your Kconfig GRR addition may look:
+
+config GRR_SCHED
+       bool "Group Round-Robin Scheduler Class"
+       help
+         This option enables the Group Round-Robin Scheduling class,
+         and makes it the default scheduler for the system.
+
+
+This is a sketch of how the bottom part of core.c may look after your additions:
+
+...
+
+#ifdef CONFIG_GRR_SCHED
+#define GRR_DEFAULT 1
+#define GRR_PERFORMANCE 2
+
+SYSCALL_DEFINE2(sched_assign_ncores_to_group, int, ncores, int, group)
+{
+#ifndef CONFIG_SMP
+        return -EINVAL;
+#else
+       /* your implementation goes here */
+       ...
+#endif /*CONFIG_SMP*/
+}
+
+SYSCALL_DEFINE2(sched_assign_process_to_group, pid_t, pid, int, group)
+{
+        /* your implementation goes here */
+        ...
+}
+
+#else /*CONFIG_GRR_SCHED*/
+SYSCALL_DEFINE2(sched_assign_ncores_to_group, int, ncores, int, group)
+{
+        return -ENOSYS;
+}
+
+SYSCALL_DEFINE2(sched_assign_process_to_group, pid_t, pid, int, group)
+{
+        return -ENOSYS;
+}
+#endif /*CONFIG_GRR_SCHED*/
