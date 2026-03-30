@@ -1,0 +1,467 @@
+diff --git a/include/linux/ept.h b/include/linux/ept.h
+new file mode 100644
+index 000000000..843d19e1d
+--- /dev/null
++++ b/include/linux/ept.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_EPT_H
++#define _LINUX_EPT_H
++
++#include <linux/mm_types.h>
++
++void ept_invalidate(struct mm_struct *mm, unsigned long address);
++
++#endif /* _LINUX_EPT_H */
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 76a75ec03..6aae9ba0c 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -189,7 +189,7 @@ static inline pte_t *pte_offset_huge(pmd_t *pmd, unsigned long address)
+ static inline pte_t *pte_alloc_huge(struct mm_struct *mm, pmd_t *pmd,
+ 				    unsigned long address)
+ {
+-	return pte_alloc(mm, pmd) ? NULL : pte_offset_huge(pmd, address);
++	return pte_alloc(mm, pmd, address) ? NULL : pte_offset_huge(pmd, address);
+ }
+ #endif
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1f80badda..2c3247c62 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2845,7 +2845,7 @@ static inline void mm_inc_nr_ptes(struct mm_struct *mm) {}
+ static inline void mm_dec_nr_ptes(struct mm_struct *mm) {}
+ #endif
+ 
+-int __pte_alloc(struct mm_struct *mm, pmd_t *pmd);
++int __pte_alloc(struct mm_struct *mm, pmd_t *pmd, unsigned long address);
+ int __pte_alloc_kernel(pmd_t *pmd);
+ 
+ #if defined(CONFIG_MMU)
+@@ -3066,13 +3066,13 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
+ 	pte_unmap(pte);					\
+ } while (0)
+ 
+-#define pte_alloc(mm, pmd) (unlikely(pmd_none(*(pmd))) && __pte_alloc(mm, pmd))
++#define pte_alloc(mm, pmd, address) (unlikely(pmd_none(*(pmd))) && __pte_alloc(mm, pmd, address))
+ 
+ #define pte_alloc_map(mm, pmd, address)			\
+-	(pte_alloc(mm, pmd) ? NULL : pte_offset_map(pmd, address))
++	(pte_alloc(mm, pmd, address) ? NULL : pte_offset_map(pmd, address))
+ 
+ #define pte_alloc_map_lock(mm, pmd, address, ptlp)	\
+-	(pte_alloc(mm, pmd) ?			\
++	(pte_alloc(mm, pmd, address) ?			\
+ 		 NULL : pte_offset_map_lock(mm, pmd, address, ptlp))
+ 
+ #define pte_alloc_kernel(pmd, address)			\
+diff --git a/mm/Makefile b/mm/Makefile
+index 850386a67..34afcae87 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -70,6 +70,7 @@ obj-y += init-mm.o
+ obj-y += memblock.o
+ obj-y += $(memory-hotplug-y)
+ obj-y += slub.o
++obj-y += ept.o
+ 
+ ifdef CONFIG_MMU
+ 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
+diff --git a/mm/ept.c b/mm/ept.c
+new file mode 100644
+index 000000000..20e548b57
+--- /dev/null
++++ b/mm/ept.c
+@@ -0,0 +1,164 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/mm.h>
++#include <linux/fs.h>
++#include <linux/miscdevice.h>
++#include <linux/capability.h>
++#include <linux/module.h>
++#include <linux/highmem.h>
++#include <linux/sched.h>
++#include <linux/ept.h>
++#include <linux/mm_types.h>
++#include <linux/mman.h>
++#include <linux/pagemap.h>
++#include <linux/hugetlb.h>
++
++#define EPT_BITS 39ULL
++#define EPT_SIZE (1ULL << EPT_BITS)
++
++static bool ept_walk_to_pte_table(struct mm_struct *mm, unsigned long target_vaddr,
++								unsigned long *out_pfn)
++{
++	pgd_t *pgd;
++	p4d_t *p4d;
++	pud_t *pud;
++	pmd_t *pmd;
++	struct page *pte_page;
++
++	pgd = pgd_offset(mm, target_vaddr);
++	if (pgd_none(*pgd) || pgd_bad(*pgd))
++		return false;
++
++	p4d = p4d_offset(pgd, target_vaddr);
++	if (p4d_none(*p4d) || p4d_bad(*p4d))
++		return false;
++
++	pud = pud_offset(p4d, target_vaddr);
++	if (pud_none(*pud) || pud_bad(*pud))
++		return false;
++
++	if (pud_trans_huge(*pud) || pud_devmap(*pud))
++		return false;
++
++	pmd = pmd_offset(pud, target_vaddr);
++	if (pmd_none(*pmd) || pmd_bad(*pmd))
++		return false;
++
++	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd))
++		return false;
++
++	/*
++	 * arm64 discrepancy
++	 * Do NOT use  pmd_pfn() here.
++	 */
++	pte_page = pmd_page(*pmd);
++	if (!pte_page)
++		return false;
++
++	*out_pfn = page_to_pfn(pte_page);
++	return true;
++}
++
++/* Custom fault handler */
++static vm_fault_t ept_fault(struct vm_fault *vmf)
++{
++	struct vm_area_struct *vma = vmf->vma;
++	struct mm_struct *mm = vma->vm_mm;
++
++	unsigned long fault_page = vmf->address & PAGE_MASK;
++	unsigned long target_vaddr = vmf->pgoff << PMD_SHIFT;
++	unsigned long pfn;
++
++	if (!ept_walk_to_pte_table(mm, target_vaddr, &pfn)) {
++		/* oh noes, no mapping; use zero page */
++		pfn = my_zero_pfn(fault_page);
++	}
++
++	return vmf_insert_pfn(vma, fault_page, pfn);
++}
++
++static const struct vm_operations_struct ept_vm_ops = {
++	.fault = ept_fault,
++};
++
++void ept_invalidate(struct mm_struct *mm, unsigned long address)
++{
++	struct vm_area_struct *vma;
++	unsigned long required_pgoff = address >> PMD_SHIFT;
++
++	VMA_ITERATOR(vmi, mm, 0);
++
++	/* why even keep a list in mm_struct, just walk all vmas */
++	for_each_vma(vmi, vma) {
++		unsigned long nr_pages;
++		unsigned long vma_off_pages;
++		unsigned long ept_addr;
++
++		if (vma->vm_ops != &ept_vm_ops)
++			continue;
++
++		nr_pages = vma_pages(vma);
++		if (required_pgoff < vma->vm_pgoff ||
++		    required_pgoff >= vma->vm_pgoff + nr_pages)
++			continue;
++
++		vma_off_pages = required_pgoff - vma->vm_pgoff;
++		ept_addr = vma->vm_start + (vma_off_pages << PAGE_SHIFT);
++
++		zap_vma_ptes(vma, ept_addr, PAGE_SIZE);
++		// flush_tlb_range(vma, ept_addr, ept_addr + PAGE_SIZE);
++		// zap_vma_ptes already flushes tlb
++	}
++}
++EXPORT_SYMBOL_GPL(ept_invalidate);
++
++static int ept_mmap(struct file *file, struct vm_area_struct *vma)
++{
++	unsigned long size = vma->vm_end - vma->vm_start;
++	unsigned long off_bytes = vma->vm_pgoff << PAGE_SHIFT;
++
++	/* root&read-only mapping */
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++
++	if (vma->vm_flags & VM_WRITE)
++		return -EPERM;
++
++	/* offset + size must fit in the exposed 512GiB space */
++	if (!PAGE_ALIGNED(size) || size == 0)
++		return -EINVAL;
++
++	if (off_bytes + size > EPT_SIZE)
++		return -EINVAL;
++
++	vm_flags_clear(vma, VM_MAYWRITE); /* non cow */
++	vma->vm_ops = &ept_vm_ops;
++	vm_flags_set(vma, VM_PFNMAP | VM_DONTCOPY | VM_DONTEXPAND | VM_DONTDUMP);
++
++	return 0;
++}
++
++static const struct file_operations ept_fops = {
++	.owner  = THIS_MODULE,
++	.mmap   = ept_mmap,
++};
++
++static struct miscdevice ept_dev = {
++	.minor = MISC_DYNAMIC_MINOR,
++	.name  = "ept",
++	.fops  = &ept_fops,
++	.mode  = 0600, /* root-only access */
++};
++
++static int __init ept_init(void)
++{
++	return misc_register(&ept_dev);
++}
++
++static void __exit ept_exit(void)
++{
++	misc_deregister(&ept_dev);
++}
++
++module_init(ept_init);
++module_exit(ept_exit);
++MODULE_LICENSE("GPL");
+diff --git a/mm/filemap.c b/mm/filemap.c
+index e9404290f..4e946b681 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3541,7 +3541,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct folio *folio,
+ 	}
+ 
+ 	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
+-		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
++		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte, vmf->address);
+ 
+ 	return false;
+ }
+diff --git a/mm/gup.c b/mm/gup.c
+index 3883b3077..f60b147ee 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -994,7 +994,7 @@ static struct page *follow_pmd_mask(struct vm_area_struct *vma,
+ 		spin_unlock(ptl);
+ 		split_huge_pmd(vma, pmd, address);
+ 		/* If pmd was left empty, stuff a page table in there quickly */
+-		return pte_alloc(mm, pmd) ? ERR_PTR(-ENOMEM) :
++		return pte_alloc(mm, pmd, address) ? ERR_PTR(-ENOMEM) :
+ 			follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
+ 	}
+ 	page = follow_huge_pmd(vma, address, pmd, flags, ctx);
+diff --git a/mm/internal.h b/mm/internal.h
+index 20b353593..9bddbbbf7 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -385,7 +385,7 @@ void folio_activate(struct folio *folio);
+ void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
+ 		   struct vm_area_struct *start_vma, unsigned long floor,
+ 		   unsigned long ceiling, bool mm_wr_locked);
+-void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
++void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte, unsigned long address);
+ 
+ struct zap_details;
+ void unmap_page_range(struct mmu_gather *tlb,
+diff --git a/mm/memory.c b/mm/memory.c
+index fb7b8dc75..d8c12ba6b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -76,6 +76,7 @@
+ #include <linux/ptrace.h>
+ #include <linux/vmalloc.h>
+ #include <linux/sched/sysctl.h>
++#include <linux/ept.h>
+ 
+ #include <trace/events/kmem.h>
+ 
+@@ -189,6 +190,7 @@ static void free_pte_range(struct mmu_gather *tlb, pmd_t *pmd,
+ {
+ 	pgtable_t token = pmd_pgtable(*pmd);
+ 	pmd_clear(pmd);
++	ept_invalidate(tlb->mm, addr);
+ 	pte_free_tlb(tlb, token, addr);
+ 	mm_dec_nr_ptes(tlb->mm);
+ }
+@@ -415,9 +417,10 @@ void free_pgtables(struct mmu_gather *tlb, struct ma_state *mas,
+ 	} while (vma);
+ }
+ 
+-void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte)
++void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte, unsigned long address)
+ {
+ 	spinlock_t *ptl = pmd_lock(mm, pmd);
++	bool installed = false;
+ 
+ 	if (likely(pmd_none(*pmd))) {	/* Has another populated it ? */
+ 		mm_inc_nr_ptes(mm);
+@@ -437,17 +440,20 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte)
+ 		smp_wmb(); /* Could be smp_wmb__xxx(before|after)_spin_lock */
+ 		pmd_populate(mm, pmd, *pte);
+ 		*pte = NULL;
++		installed = true;
+ 	}
+ 	spin_unlock(ptl);
++	if (installed)
++		ept_invalidate(mm, address);
+ }
+ 
+-int __pte_alloc(struct mm_struct *mm, pmd_t *pmd)
++int __pte_alloc(struct mm_struct *mm, pmd_t *pmd, unsigned long address)
+ {
+ 	pgtable_t new = pte_alloc_one(mm);
+ 	if (!new)
+ 		return -ENOMEM;
+ 
+-	pmd_install(mm, pmd, &new);
++	pmd_install(mm, pmd, &new, address);
+ 	if (new)
+ 		pte_free(mm, new);
+ 	return 0;
+@@ -2211,7 +2217,7 @@ static int insert_pages(struct vm_area_struct *vma, unsigned long addr,
+ 
+ 	/* Allocate the PTE if necessary; takes PMD lock once only. */
+ 	ret = -ENOMEM;
+-	if (pte_alloc(mm, pmd))
++	if (pte_alloc(mm, pmd, addr))
+ 		goto out;
+ 
+ 	while (pages_to_write_in_pmd) {
+@@ -4856,7 +4862,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ 	 * Use pte_alloc() instead of pte_alloc_map(), so that OOM can
+ 	 * be distinguished from a transient failure of pte_offset_map().
+ 	 */
+-	if (pte_alloc(vma->vm_mm, vmf->pmd))
++	if (pte_alloc(vma->vm_mm, vmf->pmd, vmf->address))
+ 		return VM_FAULT_OOM;
+ 
+ 	/* Use the zero-page for reads */
+@@ -5214,8 +5220,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 		}
+ 
+ 		if (vmf->prealloc_pte)
+-			pmd_install(vma->vm_mm, vmf->pmd, &vmf->prealloc_pte);
+-		else if (unlikely(pte_alloc(vma->vm_mm, vmf->pmd)))
++			pmd_install(vma->vm_mm, vmf->pmd, &vmf->prealloc_pte, addr);
++		else if (unlikely(pte_alloc(vma->vm_mm, vmf->pmd, addr)))
+ 			return VM_FAULT_OOM;
+ 	}
+ 
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 5bd888223..2e2d6ecac 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -598,7 +598,7 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
+ 		goto abort;
+ 	if (pmd_trans_huge(*pmdp) || pmd_devmap(*pmdp))
+ 		goto abort;
+-	if (pte_alloc(mm, pmdp))
++	if (pte_alloc(mm, pmdp, addr))
+ 		goto abort;
+ 	if (unlikely(anon_vma_prepare(vma)))
+ 		goto abort;
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 516b1d847..791353ae2 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -332,11 +332,11 @@ pgtable_populate_needed(struct vm_area_struct *vma, unsigned long cp_flags)
+  * allocation failures during page faults by kicking OOM and returning
+  * error.
+  */
+-#define  change_pmd_prepare(vma, pmd, cp_flags)				\
++#define  change_pmd_prepare(vma, pmd, addr, cp_flags)				\
+ 	({								\
+ 		long err = 0;						\
+ 		if (unlikely(pgtable_populate_needed(vma, cp_flags))) {	\
+-			if (pte_alloc(vma->vm_mm, pmd))			\
++			if (pte_alloc(vma->vm_mm, pmd, addr))			\
+ 				err = -ENOMEM;				\
+ 		}							\
+ 		err;							\
+@@ -374,7 +374,7 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
+ again:
+ 		next = pmd_addr_end(addr, end);
+ 
+-		ret = change_pmd_prepare(vma, pmd, cp_flags);
++		ret = change_pmd_prepare(vma, pmd, addr, cp_flags);
+ 		if (ret) {
+ 			pages = ret;
+ 			break;
+@@ -393,7 +393,7 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
+ 				 * cleared; make sure pmd populated if
+ 				 * necessary, then fall-through to pte level.
+ 				 */
+-				ret = change_pmd_prepare(vma, pmd, cp_flags);
++				ret = change_pmd_prepare(vma, pmd, addr, cp_flags);
+ 				if (ret) {
+ 					pages = ret;
+ 					break;
+diff --git a/mm/mremap.c b/mm/mremap.c
+index cff7f552f..7208e16df 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -674,7 +674,7 @@ unsigned long move_page_tables(struct vm_area_struct *vma,
+ 		}
+ 		if (pmd_none(*old_pmd))
+ 			continue;
+-		if (pte_alloc(new_vma->vm_mm, new_pmd))
++		if (pte_alloc(new_vma->vm_mm, new_pmd, new_addr))
+ 			break;
+ 		if (move_ptes(vma, old_pmd, old_addr, old_addr + extent,
+ 			      new_vma, new_pmd, new_addr, need_rmap_locks) < 0)
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index e478777c8..55cd594cb 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -111,7 +111,7 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 		next = pmd_addr_end(addr, end);
+ 		if (pmd_none(*pmd)) {
+ 			if (has_install)
+-				err = __pte_alloc(walk->mm, pmd);
++				err = __pte_alloc(walk->mm, pmd, addr);
+ 			else if (ops->pte_hole)
+ 				err = ops->pte_hole(addr, next, depth, walk);
+ 			if (err)
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index d06453fa8..8c81c0b8a 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -789,7 +789,7 @@ static __always_inline ssize_t mfill_atomic(struct userfaultfd_ctx *ctx,
+ 
+ 		dst_pmdval = pmdp_get_lockless(dst_pmd);
+ 		if (unlikely(pmd_none(dst_pmdval)) &&
+-		    unlikely(__pte_alloc(dst_mm, dst_pmd))) {
++		    unlikely(__pte_alloc(dst_mm, dst_pmd, dst_addr))) {
+ 			err = -ENOMEM;
+ 			break;
+ 		}
+@@ -1813,13 +1813,13 @@ ssize_t move_pages(struct userfaultfd_ctx *ctx, unsigned long dst_start,
+ 					err = -ENOENT;
+ 					break;
+ 				}
+-				if (unlikely(__pte_alloc(mm, src_pmd))) {
++				if (unlikely(__pte_alloc(mm, src_pmd, src_addr))) {
+ 					err = -ENOMEM;
+ 					break;
+ 				}
+ 			}
+ 
+-			if (unlikely(pte_alloc(mm, dst_pmd))) {
++			if (unlikely(pte_alloc(mm, dst_pmd, dst_addr))) {
+ 				err = -ENOMEM;
+ 				break;
+ 			}

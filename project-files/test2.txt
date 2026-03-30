@@ -1,0 +1,32 @@
+X=5
+skidaim@skidaims-vm:~/userspace/hw3$ sudo ./test2
+1. Time: 7765 (ns) -> <0x0>
+2. Time: 100 (ns) -> <0x0>
+3. Time: 30 (ns) -> <0x80000000455e6867>
+4. Time: 20 (ns) -> <0x80000000455e6867>
+
+X=10
+skidaim@skidaims-vm:~/userspace/hw3$ sudo ./test2
+1. Time: 6753 (ns) -> <0x0>
+2. Time: 70 (ns) -> <0x0>
+3. Time: 20 (ns) -> <0x8000000022d1e867>
+4. Time: 20 (ns) -> <0x8000000022d1e867>
+
+X=15
+skidaim@skidaims-vm:~/userspace/hw3$ sudo ./test2
+1. Time: 6833 (ns) -> <0x0>
+2. Time: 111 (ns) -> <0x0>
+3. Time: 30 (ns) -> <0x800000000280d867>
+4. Time: 90 (ns) -> <0x800000000280d867>
+
+X=20
+skidaim@skidaims-vm:~/userspace/hw3$ sudo ./test2
+1. Time: 6202 (ns) -> <0x0>
+2. Time: 120 (ns) -> <0x0>
+3. Time: 2494 (ns) -> <0x80000000327a9867>
+4. Time: 90 (ns) -> <0x80000000327a9867>
+skidaim@skidaims-vm:~/userspace/hw3$ sudo ./test2
+1. Time: 7624 (ns) -> <0x0>
+2. Time: 110 (ns) -> <0x0>
+3. Time: 110 (ns) -> <0x800000002e05f867>
+4. Time: 60 (ns) -> <0x800000002e05f867>

@@ -1,0 +1,2 @@
+skidaim@skidaims-vm:~/userspace/hw3$ sudo ./test1
+success

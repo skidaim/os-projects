@@ -1,0 +1,11 @@
+skidaim@skidaims-vm:~/userspace/hw3/bonus$ make run
+sudo ./ws_prof 2048 12 200
+Region: 2048 MiB (524288 pages), touched: 12%
+EPT window mapped: 4096 KiB (offset chunk=62227256)
+
+Method    | Avg Time (ns) | Throughput (Mpages/s) | Count
+----------+---------------+------------------------+--------
+EPT read  | 355211        | 1475.99                | 65536
+mincore() | 3890769       | 134.75                 | 65536
+
+Speedup: 10.95x
