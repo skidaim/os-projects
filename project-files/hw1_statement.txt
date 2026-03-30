@@ -1,0 +1,274 @@
+K22: Programming assignment #1
+You will develop a new system call (syscall) for the Linux 6.14 kernel, which will expose process-specific information to user-space.
+
+Your syscall will be named k22tree, and it will traverse the complete process tree of your system—in the kernel—and expose process-specific information to user-space, in a Depth-First Search (DFS) order with respect to parent–child and sibling hierarchical process relationships.
+
+For each process, k22tree will expose the following information:
+
+1) The name of the executable being executed.
+
+2) The process identifier.
+
+3) The pid of its parent process.
+
+4) The pid of its first child.
+
+5) The pid of its next sibling.
+
+6) The number of voluntary context switches.
+
+7) The number of involuntary context switches.
+
+8) The time that the process has been running since the system booted, excluding any time the system was suspended.
+
+Part-1: Implementing the syscall (90%)
+The prototype of the k22tree syscall will be:
+
+int k22tree(struct k22info *buf, int *ne);
+
+The k22tree syscall should be assigned the syscall number 467 by editing the respective architecture-specific syscall table, depending on your hardware. The implementation of k22tree should be placed in a file named k22tree.c under the kernel/ sub-directory. Furthermore, the definition of k22info should be placed in a file named k22info.h under the include/uapi/linux/ sub-directory, and be as follows:
+
+struct k22info {
+    char comm[64];                  /* name of the executable */
+    pid_t pid;                      /* process ID */
+    pid_t parent_pid;               /* parent process ID */
+    pid_t first_child_pid;          /* PID of first child */
+    pid_t next_sibling_pid;         /* PID of next sibling */
+    unsigned long nvcsw;            /* number of voluntary context switches */
+    unsigned long nivcsw;           /* number of involuntary context switches */
+    unsigned long start_time;       /* monotonic start time in nanoseconds */
+};
+
+The uapi/ directory contains the user-space Application Programming Interface (API) of the kernel and includes data structures used as arguments to syscalls. To ensure that user-space programs have access to your updated set of header files, you must do the following in the root directory of your kernel source code tree:
+
+$ sudo make headers_install INSTALL_HDR_PATH=/usr
+
+Verify that you are able to see the new header file at /usr/include/linux/k22info.h and remember that you should be doing this every time you edit a header file that is part of the uapi of the kernel. If all goes well, including the line:
+
+#include <linux/k22info.h>
+...
+
+at the top of your user-space programs as well as at your k22tree.c syscall implementation should make visible the k22info definition.
+
+Arguments
+struct k22info *buf: A pointer to a user-space buffer, which will be filled by the syscall you are implementing, with k22info entries storing process-specific information. The entries stored in the buffer should be sorted in a pre-order DFS order with respect to parent-child and sibling hierarchical process relationships, and there must be no duplicate entries.
+
+int *ne: A pointer to a user-space integer value that represents the total number of entries that can fit in the k22info buffer. If the total number of processes in the system is more than or equal to *ne, then, the syscall must fill the buffer with up to *ne entries. If the total number of processes in the system is less than *ne, then, the syscall must fill the buffer with the appropriate number of entries (i.e., no duplicates), and update *ne accordingly. (WARNING: *ne is not the total size of the k22info buffer.)
+
+Return value
+An integer indicating the total number of processes in the system; or the respective error, if an error occurs.
+Errors
+k22tree should handle possible errors that may occur and return appropriate error codes. Example errors that may occur and their respective error numbers include:
+
+-EFAULT: If buf or ne are outside the accessible address space.
+-EINVAL: If buf or ne are null, or if the number of entries is less than 1.
+See the material from tutorial 01 for more inspiration regarding potential errors that must be handled, and think strictly within the following mental model: Any user-space-provided value cannot be trusted. Where there is a dependency on a user-space-provided value, anything that could go wrong, will go wrong.
+
+Take a look also here for a broader set of potential errors and their respective error codes, but do not go overboard.
+
+Invoking the syscall
+User-space programs cannot definitely know or control the total number of processes that the kernel will need to return to user-space. Therefore, you must iteratively call k22tree with increased buffer sizes (e.g., start by some reasonable size and double it as needed) and use its return value to decide if the provided buffer was of sufficient size. In other words, if the total number of entries successfully filled in the k22info buffer by k22tree (as indicated by its return value) is smaller than or equal to the size of the buffer you allocated, then you have all you need.
+
+Points for consideration
+While accessing the process tree data structures in the kernel, it is necessary to prevent these data structures from changing.
+
+There is a primitive called lock, which ensures that while you read a shared data structure, its current version is temporarily “locked”, and no-one else can mutate it.
+
+You do not need to worry too much about the implementation specifics of locks for now, but you must use them; and you must do so correctly.
+
+Look around and identify places in the kernel where data structures similar to the ones of interest for the implementation of k22tree are used. Observe what the respective locks are and how they are being used.
+
+What you are looking for is a pattern that looks like:
+
+XXX_lock(&name_of_lock);
+
+do_some_work();
+
+XXX_unlock(&name_of_lock);
+
+Your code must not perform any operations that may block the executing process (such as memory allocation, or copying of data in and out from the kernel) while holding a lock in a locked state. Instead, if your code needs to do operations that may block, such operations must be performed with no lock being held in a locked state.
+
+Linux uses a neutral term, called tasks, to represent both processes and threads. However, internally, its implementation respects the semantics of POSIX: Threads of the same process are tasks with the same address space (mm_struct), while tasks that belong to different processes have different address spaces.
+
+A thread group comprises a POSIX process, and all threads within the same thread group share the same thread group leader, which is the first and main thread of the corresponding process. (See this for more details.)
+
+The assignment is asking that you expose information about processes, not threads.
+
+Investigate the Linux code base and see how the following macros and helper functions are used:
+
+list_for_each_entry
+thread_group_leader
+task_pid_nr
+Part-2: Demonstration and investigation (10%)
+To demonstrate the use of your syscall, you will write a simple C program, which will be calling k22tree.
+
+As explained earlier, since you do not know what a sufficient k22info buffer size is in advance, you should start with some reasonable size and use the return value of k22tree to decide when to stop.
+
+Once you are convinced that your user-space buffer has fit all required entries (placed in a pre-order DFS order), you just need some logic to traverse the buffer and identify the relative depth of each process in order to decide how many dashes to prepend while printing it. Note that if your k22tree DFS implementation is correct, excluding the first entry, then for each entry at position n, it should hold that its parent is one of the previous entries up to position n-1.
+
+One suggestion for a neat and clean implementation is to use a stack-like data structure and implement a find_parent helper. A sample draft of our user-space program is as follows:
+
+static int find_parent(int *stack, int top, int parent){
+  ...
+}
+
+/* Decide what the appropriate user-space buffer size is here... */
+...
+
+/* Define other variables as needed here... */
+...
+
+int *stack = malloc(size * sizeof(int));
+
+printf("#comm,pid,ppid,fcldpid,nsblpid,nvcsw,nivcsw,stime\n");
+printf("%s,%d,%d,%d,%d,%ld,%ld,%d\n", ...);
+...
+
+for (i = 1; i < size; i++) {
+    p = &buf[i];
+    p_pos = find_parent(stack, top, p->parent_pid);
+    ...
+    for (j = 0; j < top + 1; j++)
+        printf("-");
+
+    printf("%s,%d,%d,%d,%d,%ld,%ld,%d\n", ...);
+}
+...
+
+Example output and comparison versus the ps bash command:
+
+$ ./k22test | grep "snapd\|systemd"
+-systemd,1,0,710,2,2781,489,0
+--systemd-journal,710,1,0,721,1778,271,5
+--systemd-oomd,721,1,0,748,869,3,5
+--systemd-resolve,748,1,0,776,157,12,5
+--systemd-udevd,776,1,0,1494,758,117,5
+--snapd,1506,1,0,1508,449,45,6
+--systemd-logind,1517,1,0,1520,1942,114,6
+--systemd,2559,1,2560,3873,665,178,65
+---snapd-desktop-i,3599,2559,3665,3610,61,11,356
+----snapd-desktop-i,3665,3599,0,0,130,2,356
+
+$ ps -FALL | grep "snapd\|systemd"
+root         710       1     710  0    1 16879 35272   7 10:19 ?        00:00:00 /usr/lib/systemd/systemd-journald
+systemd+     721       1     721  0    1  4399  6760   4 10:19 ?        00:00:00 /usr/lib/systemd/systemd-oomd
+systemd+     748       1     748  0    1  5678 13096   0 10:19 ?        00:00:00 /usr/lib/systemd/systemd-resolved
+root         776       1     776  0    1  8610 11080   4 10:19 ?        00:00:00 /usr/lib/systemd/systemd-udevd
+message+    1495       1    1495  0    1  2974  7132   4 10:19 ?        00:00:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root        1506       1    1506  0   14 554485 37072  0 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1766  0   14 554485 37072  6 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1768  0   14 554485 37072  5 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1769  0   14 554485 37072  4 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1770  0   14 554485 37072  0 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1774  0   14 554485 37072  3 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1980  0   14 554485 37072  4 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    1989  0   14 554485 37072  6 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    2022  0   14 554485 37072  3 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    2023  0   14 554485 37072  1 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    2024  0   14 554485 37072  7 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    2086  0   14 554485 37072  6 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    2101  0   14 554485 37072  7 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1506       1    2102  0   14 554485 37072  1 10:19 ?        00:00:00 /usr/lib/snapd/snapd
+root        1517       1    1517  0    1  4619  8324   5 10:19 ?        00:00:00 /usr/lib/systemd/systemd-logind
+k22         2559       1    2559  0    1  5739 12612   3 10:20 ?        00:00:00 /usr/lib/systemd/systemd --user
+k22         2583    2559    2583  0    1  2477  5204   7 10:20 ?        00:00:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+k22         2937    2559    2937  0    5 122545 14300  5 10:24 ?        00:00:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+k22         2937    2559    2946  0    5 122545 14300  2 10:24 ?        00:00:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+k22         2937    2559    2947  0    5 122545 14300  4 10:24 ?        00:00:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+k22         2937    2559    2949  0    5 122545 14300  7 10:24 ?        00:00:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+k22         2937    2559    2951  0    5 122545 14300  3 10:24 ?        00:00:00 /usr/libexec/gnome-session-binary --systemd-service --session=ubuntu
+k22         3599    2559    3599  0    1 10350 10388   2 10:25 ?        00:00:00 /snap/snapd-desktop-integration/316/usr/bin/snapd-desktop-integration
+k22         3665    3599    3665  0    5 108866 30800  5 10:25 ?        00:00:00 /snap/snapd-desktop-integration/316/usr/bin/snapd-desktop-integration
+k22         3665    3599    3687  0    5 108866 30800  6 10:25 ?        00:00:00 /snap/snapd-desktop-integration/316/usr/bin/snapd-desktop-integration
+k22         3665    3599    3688  0    5 108866 30800  0 10:25 ?        00:00:00 /snap/snapd-desktop-integration/316/usr/bin/snapd-desktop-integration
+k22         3665    3599    3689  0    5 108866 30800  4 10:25 ?        00:00:00 /snap/snapd-desktop-integration/316/usr/bin/snapd-desktop-integration
+k22         3665    3599    3690  0    5 108866 30800  4 10:25 ?        00:00:00 /snap/snapd-desktop-integration/
+
+Finally, a more complete example:
+
+$ ./k22test
+- User-space buf. size: 100
+- syscall return val:   246
+- User-space buf. size: 256
+- syscall return val:   246
+--- OK ---
+
+#comm,pid,ppid,fcldpid,nsblpid,nvcsw,nivcsw,stime
+swapper/0,0,0,1,0,0,20742,0
+-systemd,1,0,710,2,2784,489,0
+--systemd-journal,710,1,0,721,1780,271,5
+--systemd-oomd,721,1,0,748,906,3,5
+--systemd-resolve,748,1,0,776,158,12,5
+--systemd-udevd,776,1,0,1494,763,117,5
+--avahi-daemon,1494,1,1532,1495,625,21,6
+---avahi-daemon,1532,1494,0,0,3,0,6
+--dbus-daemon,1495,1,0,1499,3690,662,6
+--gnome-remote-de,1499,1,0,1502,104,36,6
+--polkitd,1502,1,0,1506,965,452,6
+--snapd,1506,1,0,1508,449,45,6
+--accounts-daemon,1508,1,0,1510,220,50,6
+--cron,1510,1,0,1511,26,2,6
+--switcheroo-cont,1511,1,0,1517,47,25,6
+--systemd-logind,1517,1,0,1520,1942,114,6
+--udisksd,1520,1,0,1556,318,81,6
+--prltoolsd,1556,1,1609,1581,10,2,6
+---prlshprint,1609,1556,0,1610,8,0,6
+---prltimesync,1610,1556,0,0,4,1,6
+--rsyslogd,1581,1,0,1631,29,10,6
+--NetworkManager,1631,1,0,1633,406,113,6
+--wpa_supplicant,1633,1,0,1672,124,20,6
+--ModemManager,1672,1,0,1772,242,20,6
+--cupsd,1772,1,0,1776,121,22,6
+--unattended-upgr,1776,1,0,1789,115,2,6
+--colord,1789,1,0,1790,197,202,6
+--gdm3,1790,1,2836,1827,109,15,6
+---gdm-session-wor,2836,1790,2856,0,55,8,353
+----gdm-wayland-ses,2856,2836,2861,0,16,0,354
+-----gnome-session-b,2861,2856,0,0,75,1,354
+--cups-browsed,1827,1,0,1876,283,9,6
+--rtkit-daemon,1876,1,0,2129,72,29,7
+--upowerd,2129,1,0,2486,215,83,7
+--power-profiles-,2486,1,0,2552,111,3,8
+--sshd,2552,1,2554,2559,6,1,65
+---sshd-session,2554,2552,2671,0,50,1,65
+----sshd-session,2671,2554,2694,0,6231,2,65
+-----bash,2694,2671,3930,0,416,3,65
+------k22test,3930,2694,0,0,0,0,901
+...
+--kworker/R-scsi_,192,2,0,193,2,0,0
+--scsi_eh_1,193,2,0,194,73,1,0
+--kworker/R-scsi_,194,2,0,197,2,0,0
+--scsi_eh_2,197,2,0,199,21,0,0
+--kworker/R-scsi_,199,2,0,200,2,0,0
+--scsi_eh_3,200,2,0,202,22,0,0
+--kworker/R-scsi_,202,2,0,211,2,0,0
+--scsi_eh_4,211,2,0,212,22,0,0
+--kworker/R-scsi_,212,2,0,235,2,0,0
+--scsi_eh_5,235,2,0,236,21,0,0
+--kworker/R-scsi_,236,2,0,238,2,0,0
+--kworker/u32:6,238,2,0,612,2297,301,0
+--kworker/0:2H,612,2,0,655,741,5,2
+--jbd2/sda2-8,655,2,0,656,425,106,4
+--kworker/R-ext4-,656,2,0,751,2,0,4
+--kworker/7:2,751,2,0,779,81,0,5
+--psimon,779,2,0,851,2,0,5
+--kworker/3:2,851,2,0,1210,7,0,5
+--kworker/0:3,1210,2,0,1235,4276,9,5
+--kworker/u32:9,1235,2,0,1817,2342,513,6
+--psimon,1817,2,0,2555,2,0,6
+--kworker/2:3,2555,2,0,2849,8,0,65
+--kworker/4:1,2849,2,0,3314,661,1,354
+--kworker/5:2,3314,2,0,3731,2,0,355
+--kworker/u32:0,3731,2,0,3758,707,8,366
+--kworker/1:0,3758,2,0,3852,2,0,366
+--kworker/2:0,3852,2,0,3853,4,0,661
+--kworker/2:2,3853,2,0,3910,4,0,661
+--kworker/6:2,3910,2,0,3914,2,0,696
+--kworker/u32:1,3914,2,0,3915,228,0,793
+--kworker/u32:2,3915,2,0,3916,4,0,793
+--kworker/u32:5,3916,2,0,0,2,0,793
+
+Questions to answer during your investigation
+Q1: What would be the characteristics of a program whose process would have a high nivctx number?
+Q2: What would be a program whose process would have a high nvctx number?
+Q3: What do you observe on the start time of some processes? Would you say that these are user programs, or not? Clarify your answer.
