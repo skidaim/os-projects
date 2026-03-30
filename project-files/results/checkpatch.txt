@@ -1,0 +1,14 @@
+skidaim@skidaims-vm:~/finaltest/linux-6.14$ git diff refs/tags/v6.14  | ./scripts/checkpatch.pl
+WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+#14: 
+new file mode 100644
+
+total: 0 errors, 1 warnings, 250 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+Your patch has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.

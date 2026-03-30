@@ -1,0 +1,738 @@
+UID          PID    PPID     LWP  C NLWP    SZ   RSS PSR STIME TTY          TIME CMD
+root           1       0       1  0    1  6451 15724   3 18:26 ?        00:00:04 /sbin/init auto automatic-ubiquity noprompt
+root           2       0       2  0    1     0     0   1 18:26 ?        00:00:00 [kthreadd]
+root           3       2       3  0    1     0     0   0 18:26 ?        00:00:00 [pool_workqueue_release]
+root           4       2       4  0    1     0     0   0 18:26 ?        00:00:00 [kworker/R-rcu_gp]
+root           5       2       5  0    1     0     0   0 18:26 ?        00:00:00 [kworker/R-sync_wq]
+root           6       2       6  0    1     0     0   0 18:26 ?        00:00:00 [kworker/R-kvfree_rcu_reclaim]
+root           7       2       7  0    1     0     0   0 18:26 ?        00:00:00 [kworker/R-slub_flushwq]
+root           8       2       8  0    1     0     0   0 18:26 ?        00:00:00 [kworker/R-netns]
+root          11       2      11  0    1     0     0   0 18:26 ?        00:00:04 [kworker/0:0H-kblockd]
+root          13       2      13  0    1     0     0   0 18:26 ?        00:00:00 [kworker/R-mm_percpu_wq]
+root          14       2      14  0    1     0     0   0 18:26 ?        00:00:00 [rcu_tasks_kthread]
+root          15       2      15  0    1     0     0   0 18:26 ?        00:00:00 [rcu_tasks_rude_kthread]
+root          16       2      16  0    1     0     0   0 18:26 ?        00:00:00 [rcu_tasks_trace_kthread]
+root          17       2      17  0    1     0     0   0 18:26 ?        00:00:00 [ksoftirqd/0]
+root          18       2      18  0    1     0     0   5 18:26 ?        00:00:19 [rcu_preempt]
+root          19       2      19  0    1     0     0   2 18:26 ?        00:00:00 [rcu_exp_par_gp_kthread_worker/1]
+root          20       2      20  0    1     0     0   1 18:26 ?        00:00:00 [rcu_exp_gp_kthread_worker]
+root          21       2      21  0    1     0     0   0 18:26 ?        00:00:00 [migration/0]
+root          22       2      22  0    1     0     0   0 18:26 ?        00:00:00 [idle_inject/0]
+root          23       2      23  0    1     0     0   0 18:26 ?        00:00:00 [cpuhp/0]
+root          24       2      24  0    1     0     0   1 18:26 ?        00:00:00 [cpuhp/1]
+root          25       2      25  0    1     0     0   1 18:26 ?        00:00:00 [idle_inject/1]
+root          26       2      26  0    1     0     0   1 18:26 ?        00:00:00 [migration/1]
+root          27       2      27  0    1     0     0   1 18:26 ?        00:00:01 [ksoftirqd/1]
+root          29       2      29  0    1     0     0   1 18:26 ?        00:00:00 [kworker/1:0H-events_highpri]
+root          30       2      30  0    1     0     0   2 18:26 ?        00:00:00 [cpuhp/2]
+root          31       2      31  0    1     0     0   2 18:26 ?        00:00:00 [idle_inject/2]
+root          32       2      32  0    1     0     0   2 18:26 ?        00:00:00 [migration/2]
+root          33       2      33  0    1     0     0   2 18:26 ?        00:00:01 [ksoftirqd/2]
+root          35       2      35  0    1     0     0   2 18:26 ?        00:00:00 [kworker/2:0H-events_highpri]
+root          36       2      36  0    1     0     0   3 18:26 ?        00:00:00 [cpuhp/3]
+root          37       2      37  0    1     0     0   3 18:26 ?        00:00:00 [idle_inject/3]
+root          38       2      38  0    1     0     0   3 18:26 ?        00:00:00 [migration/3]
+root          39       2      39  0    1     0     0   3 18:26 ?        00:00:00 [ksoftirqd/3]
+root          41       2      41  0    1     0     0   3 18:26 ?        00:00:00 [kworker/3:0H-events_highpri]
+root          42       2      42  0    1     0     0   4 18:26 ?        00:00:00 [cpuhp/4]
+root          43       2      43  0    1     0     0   4 18:26 ?        00:00:00 [idle_inject/4]
+root          44       2      44  0    1     0     0   4 18:26 ?        00:00:00 [migration/4]
+root          45       2      45  0    1     0     0   4 18:26 ?        00:00:00 [ksoftirqd/4]
+root          47       2      47  0    1     0     0   4 18:26 ?        00:00:00 [kworker/4:0H-events_highpri]
+root          48       2      48  0    1     0     0   5 18:26 ?        00:00:00 [cpuhp/5]
+root          49       2      49  0    1     0     0   5 18:26 ?        00:00:00 [idle_inject/5]
+root          50       2      50  0    1     0     0   5 18:26 ?        00:00:00 [migration/5]
+root          51       2      51  0    1     0     0   5 18:26 ?        00:00:03 [ksoftirqd/5]
+root          54       2      54  0    1     0     0   3 18:26 ?        00:00:00 [kdevtmpfs]
+root          55       2      55  0    1     0     0   5 18:26 ?        00:00:00 [kworker/R-inet_frag_wq]
+root          56       2      56  0    1     0     0   2 18:26 ?        00:00:00 [kauditd]
+root          57       2      57  0    1     0     0   5 18:26 ?        00:00:00 [khungtaskd]
+root          59       2      59  0    1     0     0   4 18:26 ?        00:00:00 [oom_reaper]
+root          61       2      61  0    1     0     0   4 18:26 ?        00:00:00 [kworker/R-writeback]
+root          62       2      62  0    1     0     0   5 18:26 ?        00:00:06 [kcompactd0]
+root          63       2      63  0    1     0     0   4 18:26 ?        00:00:00 [ksmd]
+root          64       2      64  0    1     0     0   4 18:26 ?        00:00:00 [khugepaged]
+root          65       2      65  0    1     0     0   5 18:26 ?        00:00:00 [kworker/R-kintegrityd]
+root          66       2      66  0    1     0     0   5 18:26 ?        00:00:00 [kworker/R-kblockd]
+root          67       2      67  0    1     0     0   1 18:26 ?        00:00:00 [irq/9-acpi]
+root          71       2      71  0    1     0     0   5 18:26 ?        00:00:00 [kworker/R-tpm_dev_wq]
+root          72       2      72  0    1     0     0   2 18:26 ?        00:00:00 [kworker/R-ata_sff]
+root          73       2      73  0    1     0     0   3 18:26 ?        00:00:00 [kworker/R-md]
+root          74       2      74  0    1     0     0   1 18:26 ?        00:00:00 [kworker/R-md_bitmap]
+root          75       2      75  0    1     0     0   5 18:26 ?        00:00:00 [kworker/R-edac-poller]
+root          76       2      76  0    1     0     0   5 18:26 ?        00:00:00 [kworker/R-devfreq_wq]
+root          77       2      77  0    1     0     0   3 18:26 ?        00:00:00 [watchdogd]
+root          80       2      80  0    1     0     0   3 18:27 ?        00:00:35 [kswapd0]
+root          81       2      81  0    1     0     0   5 18:27 ?        00:00:00 [ecryptfs-kthread]
+root          82       2      82  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-kthrotld]
+root          83       2      83  0    1     0     0   2 18:27 ?        00:00:00 [irq/24-pciehp]
+root          84       2      84  0    1     0     0   3 18:27 ?        00:00:00 [irq/25-pciehp]
+root          85       2      85  0    1     0     0   4 18:27 ?        00:00:00 [irq/26-pciehp]
+root          86       2      86  0    1     0     0   5 18:27 ?        00:00:00 [irq/27-pciehp]
+root          87       2      87  0    1     0     0   0 18:27 ?        00:00:00 [irq/28-pciehp]
+root          88       2      88  0    1     0     0   1 18:27 ?        00:00:00 [irq/29-pciehp]
+root          89       2      89  0    1     0     0   2 18:27 ?        00:00:00 [irq/30-pciehp]
+root          90       2      90  0    1     0     0   3 18:27 ?        00:00:00 [irq/31-pciehp]
+root          91       2      91  0    1     0     0   4 18:27 ?        00:00:00 [irq/32-pciehp]
+root          92       2      92  0    1     0     0   5 18:27 ?        00:00:00 [irq/33-pciehp]
+root          93       2      93  0    1     0     0   0 18:27 ?        00:00:00 [irq/34-pciehp]
+root          94       2      94  0    1     0     0   1 18:27 ?        00:00:00 [irq/35-pciehp]
+root          95       2      95  0    1     0     0   2 18:27 ?        00:00:00 [irq/36-pciehp]
+root          96       2      96  0    1     0     0   3 18:27 ?        00:00:00 [irq/37-pciehp]
+root          97       2      97  0    1     0     0   4 18:27 ?        00:00:00 [irq/38-pciehp]
+root          98       2      98  0    1     0     0   5 18:27 ?        00:00:00 [irq/39-pciehp]
+root          99       2      99  0    1     0     0   0 18:27 ?        00:00:00 [irq/40-pciehp]
+root         100       2     100  0    1     0     0   1 18:27 ?        00:00:00 [irq/41-pciehp]
+root         101       2     101  0    1     0     0   2 18:27 ?        00:00:00 [irq/42-pciehp]
+root         102       2     102  0    1     0     0   3 18:27 ?        00:00:00 [irq/43-pciehp]
+root         103       2     103  0    1     0     0   4 18:27 ?        00:00:00 [irq/44-pciehp]
+root         104       2     104  0    1     0     0   5 18:27 ?        00:00:00 [irq/45-pciehp]
+root         105       2     105  0    1     0     0   0 18:27 ?        00:00:00 [irq/46-pciehp]
+root         106       2     106  0    1     0     0   1 18:27 ?        00:00:00 [irq/47-pciehp]
+root         107       2     107  0    1     0     0   2 18:27 ?        00:00:00 [irq/48-pciehp]
+root         108       2     108  0    1     0     0   3 18:27 ?        00:00:00 [irq/49-pciehp]
+root         109       2     109  0    1     0     0   4 18:27 ?        00:00:00 [irq/50-pciehp]
+root         110       2     110  0    1     0     0   5 18:27 ?        00:00:00 [irq/51-pciehp]
+root         111       2     111  0    1     0     0   0 18:27 ?        00:00:00 [irq/52-pciehp]
+root         112       2     112  0    1     0     0   1 18:27 ?        00:00:00 [irq/53-pciehp]
+root         113       2     113  0    1     0     0   2 18:27 ?        00:00:00 [irq/54-pciehp]
+root         114       2     114  0    1     0     0   3 18:27 ?        00:00:00 [irq/55-pciehp]
+root         115       2     115  0    1     0     0   5 18:27 ?        00:00:00 [kworker/R-acpi_thermal_pm]
+root         116       2     116  0    1     0     0   4 18:27 ?        00:00:00 [scsi_eh_0]
+root         117       2     117  0    1     0     0   5 18:27 ?        00:00:00 [kworker/R-scsi_tmf_0]
+root         118       2     118  0    1     0     0   5 18:27 ?        00:00:00 [scsi_eh_1]
+root         119       2     119  0    1     0     0   5 18:27 ?        00:00:00 [kworker/R-scsi_tmf_1]
+root         122       2     122  0    1     0     0   3 18:27 ?        00:00:00 [kworker/R-mld]
+root         123       2     123  0    1     0     0   2 18:27 ?        00:00:04 [kworker/2:1H-kblockd]
+root         124       2     124  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-ipv6_addrconf]
+root         131       2     131  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-kstrp]
+root         132       2     132  0    1     0     0   5 18:27 ?        00:00:00 [kworker/5:1-cgroup_destroy]
+root         134       2     134  0    1     0     0   0 18:27 ?        00:00:00 [kworker/u513:0-ttm]
+root         147       2     147  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-charger_manager]
+root         148       2     148  0    1     0     0   2 18:27 ?        00:00:00 [kworker/2:2-mm_percpu_wq]
+root         174       2     174  0    1     0     0   1 18:27 ?        00:00:05 [kworker/1:1H-kblockd]
+root         204       2     204  0    1     0     0   3 18:27 ?        00:00:05 [kworker/3:1H-kblockd]
+root         206       2     206  0    1     0     0   4 18:27 ?        00:00:04 [kworker/4:1H-kblockd]
+root         208       2     208  0    1     0     0   5 18:27 ?        00:00:00 [kworker/5:2-cgroup_destroy]
+root         209       2     209  0    1     0     0   3 18:27 ?        00:00:00 [kworker/R-mpt_poll_0]
+root         210       2     210  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-mpt/0]
+root         226       2     226  0    1     0     0   2 18:27 ?        00:00:00 [scsi_eh_2]
+root         227       2     227  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-scsi_tmf_2]
+root         228       2     228  0    1     0     0   4 18:27 ?        00:00:00 [scsi_eh_3]
+root         229       2     229  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_3]
+root         230       2     230  0    1     0     0   0 18:27 ?        00:00:00 [scsi_eh_4]
+root         231       2     231  0    1     0     0   5 18:27 ?        00:00:00 [kworker/R-scsi_tmf_4]
+root         232       2     232  0    1     0     0   1 18:27 ?        00:00:00 [scsi_eh_5]
+root         233       2     233  0    1     0     0   1 18:27 ?        00:00:00 [kworker/R-scsi_tmf_5]
+root         234       2     234  0    1     0     0   1 18:27 ?        00:00:00 [scsi_eh_6]
+root         235       2     235  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_6]
+root         236       2     236  0    1     0     0   0 18:27 ?        00:00:00 [scsi_eh_7]
+root         237       2     237  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_7]
+root         238       2     238  0    1     0     0   1 18:27 ?        00:00:00 [scsi_eh_8]
+root         239       2     239  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-scsi_tmf_8]
+root         240       2     240  0    1     0     0   0 18:27 ?        00:00:00 [scsi_eh_9]
+root         241       2     241  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_9]
+root         242       2     242  0    1     0     0   5 18:27 ?        00:00:00 [scsi_eh_10]
+root         243       2     243  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_10]
+root         244       2     244  0    1     0     0   2 18:27 ?        00:00:00 [scsi_eh_11]
+root         245       2     245  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_11]
+root         246       2     246  0    1     0     0   0 18:27 ?        00:00:00 [scsi_eh_12]
+root         247       2     247  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_12]
+root         248       2     248  0    1     0     0   2 18:27 ?        00:00:00 [scsi_eh_13]
+root         249       2     249  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_13]
+root         250       2     250  0    1     0     0   1 18:27 ?        00:00:00 [scsi_eh_14]
+root         251       2     251  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_14]
+root         252       2     252  0    1     0     0   3 18:27 ?        00:00:00 [scsi_eh_15]
+root         253       2     253  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_15]
+root         254       2     254  0    1     0     0   5 18:27 ?        00:00:00 [scsi_eh_16]
+root         255       2     255  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_16]
+root         256       2     256  0    1     0     0   0 18:27 ?        00:00:00 [scsi_eh_17]
+root         257       2     257  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_17]
+root         258       2     258  0    1     0     0   1 18:27 ?        00:00:00 [scsi_eh_18]
+root         259       2     259  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_18]
+root         260       2     260  0    1     0     0   3 18:27 ?        00:00:00 [scsi_eh_19]
+root         261       2     261  0    1     0     0   4 18:27 ?        00:00:00 [kworker/R-scsi_tmf_19]
+root         262       2     262  0    1     0     0   5 18:27 ?        00:00:00 [scsi_eh_20]
+root         263       2     263  0    1     0     0   3 18:27 ?        00:00:00 [kworker/R-scsi_tmf_20]
+root         264       2     264  0    1     0     0   0 18:27 ?        00:00:00 [scsi_eh_21]
+root         265       2     265  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_21]
+root         266       2     266  0    1     0     0   3 18:27 ?        00:00:00 [scsi_eh_22]
+root         267       2     267  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_22]
+root         268       2     268  0    1     0     0   4 18:27 ?        00:00:00 [scsi_eh_23]
+root         269       2     269  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_23]
+root         270       2     270  0    1     0     0   2 18:27 ?        00:00:00 [scsi_eh_24]
+root         271       2     271  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_24]
+root         272       2     272  0    1     0     0   2 18:27 ?        00:00:00 [scsi_eh_25]
+root         273       2     273  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_25]
+root         274       2     274  0    1     0     0   3 18:27 ?        00:00:00 [scsi_eh_26]
+root         275       2     275  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_26]
+root         276       2     276  0    1     0     0   4 18:27 ?        00:00:00 [scsi_eh_27]
+root         277       2     277  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_27]
+root         278       2     278  0    1     0     0   4 18:27 ?        00:00:00 [scsi_eh_28]
+root         279       2     279  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-scsi_tmf_28]
+root         280       2     280  0    1     0     0   5 18:27 ?        00:00:00 [scsi_eh_29]
+root         281       2     281  0    1     0     0   3 18:27 ?        00:00:00 [kworker/R-scsi_tmf_29]
+root         282       2     282  0    1     0     0   3 18:27 ?        00:00:00 [scsi_eh_30]
+root         283       2     283  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-scsi_tmf_30]
+root         284       2     284  0    1     0     0   3 18:27 ?        00:00:00 [scsi_eh_31]
+root         285       2     285  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-scsi_tmf_31]
+root         286       2     286  0    1     0     0   4 18:27 ?        00:00:00 [scsi_eh_32]
+root         287       2     287  0    1     0     0   3 18:27 ?        00:00:00 [kworker/R-scsi_tmf_32]
+root         358       2     358  0    1     0     0   5 18:27 ?        00:00:00 [jbd2/sda2-8]
+root         359       2     359  0    1     0     0   1 18:27 ?        00:00:00 [kworker/R-ext4-rsv-conversion]
+root         407       2     407  0    1     0     0   1 18:27 ?        00:00:00 [irq/57-vmw_vmci]
+root         408       2     408  0    1     0     0   2 18:27 ?        00:00:00 [irq/58-vmw_vmci]
+root         409       2     409  0    1     0     0   3 18:27 ?        00:00:00 [irq/59-vmw_vmci]
+root         417       1     417  0    1 14881 20524   1 18:27 ?        00:00:01 /usr/lib/systemd/systemd-journald
+systemd+     431       1     431  0    1  4568  7052   0 18:27 ?        00:00:02 /usr/lib/systemd/systemd-oomd
+root         458       1     458  0    3 38141  1304   2 18:27 ?        00:00:00 vmware-vmblock-fuse /run/vmblock-fuse -o rw,subtype=vmware-
+root         458       1     459  0    3 38141  1304   1 18:27 ?        00:00:00 vmware-vmblock-fuse /run/vmblock-fuse -o rw,subtype=vmware-
+root         458       1     460  0    3 38141  1304   2 18:27 ?        00:00:00 vmware-vmblock-fuse /run/vmblock-fuse -o rw,subtype=vmware-
+systemd+     461       1     461  0    2 22907  7836   1 18:27 ?        00:00:00 /usr/lib/systemd/systemd-timesyncd
+systemd+     461       1     472  0    2 22907  7836   0 18:27 ?        00:00:00 /usr/lib/systemd/systemd-timesyncd
+root         466       2     466  0    1     0     0   4 18:27 ?        00:00:00 [irq/16-vmwgfx]
+root         467       2     467  0    1     0     0   2 18:27 ?        00:00:00 [kworker/R-ttm]
+root         468       1     468  0    1  9122 12996   1 18:27 ?        00:00:00 /usr/lib/systemd/systemd-udevd
+systemd+     474       1     474  0    1  5832 13308   4 18:27 ?        00:00:00 /usr/lib/systemd/systemd-resolved
+root         496       2     496  0    1     0     0   3 18:27 ?        00:00:00 [psimon]
+root        1099       1    1099  0    1  5978 10316   5 18:27 ?        00:00:00 /usr/bin/VGAuthService
+root        1103       1    1103  0    4 29219  9088   4 18:27 ?        00:00:05 /usr/bin/vmtoolsd
+root        1103       1    1156  0    4 29219  9088   1 18:27 ?        00:00:00 /usr/bin/vmtoolsd
+root        1103       1    1158  0    4 29219  9088   1 18:27 ?        00:00:00 /usr/bin/vmtoolsd
+root        1103       1    1159  0    4 29219  9088   4 18:27 ?        00:00:00 /usr/bin/vmtoolsd
+root        1470       2    1470  0    1     0     0   0 18:27 ?        00:00:00 [kworker/R-cryptd]
+avahi       1501       1    1501  0    1  1699  4100   5 18:27 ?        00:00:00 avahi-daemon: running [skidaims-vm.local]
+message+    1502       1    1502  0    1  2937  6680   2 18:27 ?        00:00:00 @dbus-daemon --system --address=systemd: --nofork --nopidfi
+gnome-r+    1506       1    1506  0    4 130365 14376  0 18:27 ?        00:00:00 /usr/libexec/gnome-remote-desktop-daemon --system
+gnome-r+    1506       1    1593  0    4 130365 14376  3 18:27 ?        00:00:00 /usr/libexec/gnome-remote-desktop-daemon --system
+gnome-r+    1506       1    1594  0    4 130365 14376  4 18:27 ?        00:00:00 /usr/libexec/gnome-remote-desktop-daemon --system
+gnome-r+    1506       1    1599  0    4 130365 14376  0 18:27 ?        00:00:00 /usr/libexec/gnome-remote-desktop-daemon --system
+polkitd     1509       1    1509  0    4 95814 10524   4 18:27 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=notice
+polkitd     1509       1    1619  0    4 95814 10524   4 18:27 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=notice
+polkitd     1509       1    1620  0    4 95814 10524   2 18:27 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=notice
+polkitd     1509       1    1622  0    4 95814 10524   4 18:27 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=notice
+root        1518       1    1518  0   13 536265 16496  4 18:27 ?        00:00:01 /usr/lib/snapd/snapd
+root        1518       1    1674  0   13 536265 16496  4 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1675  0   13 536265 16496  1 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1676  0   13 536265 16496  4 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1677  0   13 536265 16496  2 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1679  0   13 536265 16496  5 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1783  0   13 536265 16496  2 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1784  0   13 536265 16496  2 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1785  0   13 536265 16496  2 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    1864  0   13 536265 16496  0 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    2024  0   13 536265 16496  5 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    2064  0   13 536265 16496  4 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1518       1    2799  0   13 536265 16496  1 18:27 ?        00:00:00 /usr/lib/snapd/snapd
+root        1527       1    1527  0    4 77971  7188   2 18:27 ?        00:00:00 /usr/libexec/accounts-daemon
+root        1527       1    1573  0    4 77971  7188   5 18:27 ?        00:00:00 /usr/libexec/accounts-daemon
+root        1527       1    1574  0    4 77971  7188   5 18:27 ?        00:00:00 /usr/libexec/accounts-daemon
+root        1527       1    1591  0    4 77971  7188   3 18:27 ?        00:00:00 /usr/libexec/accounts-daemon
+root        1531       1    1531  0    1  2426  2968   5 18:27 ?        00:00:00 /usr/sbin/cron -f -P
+root        1533       1    1533  0    4 77644  7112   1 18:27 ?        00:00:00 /usr/libexec/switcheroo-control
+root        1533       1    1552  0    4 77644  7112   1 18:27 ?        00:00:00 /usr/libexec/switcheroo-control
+root        1533       1    1554  0    4 77644  7112   2 18:27 ?        00:00:00 /usr/libexec/switcheroo-control
+root        1533       1    1588  0    4 77644  7112   5 18:27 ?        00:00:00 /usr/libexec/switcheroo-control
+root        1548       1    1548  0    1  4755  9184   2 18:27 ?        00:00:00 /usr/lib/systemd/systemd-logind
+root        1549       1    1549  0    6 117697 12268  4 18:27 ?        00:00:00 /usr/libexec/udisks2/udisksd
+root        1549       1    1568  0    6 117697 12268  1 18:27 ?        00:00:00 /usr/libexec/udisks2/udisksd
+root        1549       1    1569  0    6 117697 12268  2 18:27 ?        00:00:00 /usr/libexec/udisks2/udisksd
+root        1549       1    1590  0    6 117697 12268  2 18:27 ?        00:00:00 /usr/libexec/udisks2/udisksd
+root        1549       1    1651  0    6 117697 12268  1 18:27 ?        00:00:00 /usr/libexec/udisks2/udisksd
+root        1549       1    1657  0    6 117697 12268  5 18:27 ?        00:00:00 /usr/libexec/udisks2/udisksd
+syslog      1563       1    1563  0    4 55183  5716   0 18:27 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
+syslog      1563       1    1601  0    4 55183  5716   0 18:27 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
+syslog      1563       1    1603  0    4 55183  5716   1 18:27 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
+syslog      1563       1    1604  0    4 55183  5716   2 18:27 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
+avahi       1567    1501    1567  0    1  1652  1504   2 18:27 ?        00:00:00 avahi-daemon: chroot helper
+root        1605       1    1605  0    4 84990 17908   0 18:27 ?        00:00:00 /usr/sbin/NetworkManager --no-daemon
+root        1605       1    1647  0    4 84990 17908   1 18:27 ?        00:00:00 /usr/sbin/NetworkManager --no-daemon
+root        1605       1    1649  0    4 84990 17908   2 18:27 ?        00:00:00 /usr/sbin/NetworkManager --no-daemon
+root        1605       1    1650  0    4 84990 17908   5 18:27 ?        00:00:00 /usr/sbin/NetworkManager --no-daemon
+root        1607       1    1607  0    1  4604  4776   3 18:27 ?        00:00:00 /usr/sbin/wpa_supplicant -u -s -O DIR=/run/wpa_supplicant G
+root        1641       2    1641  0    1     0     0   3 18:27 ?        00:00:00 [kworker/3:3-cgwb_release]
+root        1652       1    1652  0    4 97848 11576   2 18:27 ?        00:00:00 /usr/sbin/ModemManager
+root        1652       1    1656  0    4 97848 11576   3 18:27 ?        00:00:00 /usr/sbin/ModemManager
+root        1652       1    1658  0    4 97848 11576   5 18:27 ?        00:00:00 /usr/sbin/ModemManager
+root        1652       1    1660  0    4 97848 11576   3 18:27 ?        00:00:00 /usr/sbin/ModemManager
+root        1737       1    1737  0    1  8157 11400   0 18:27 ?        00:00:00 /usr/sbin/cupsd -l
+root        1743       1    1743  0    2 30902 22868   1 18:27 ?        00:00:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-
+root        1743       1    1766  0    2 30902 22868   4 18:27 ?        00:00:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-
+lp          1745    1737    1745  0    1  3950  6656   0 18:27 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+root        1757       1    1757  0    4 78330  8616   4 18:27 ?        00:00:00 /usr/sbin/gdm3
+root        1757       1    1759  0    4 78330  8616   1 18:27 ?        00:00:00 /usr/sbin/gdm3
+root        1757       1    1760  0    4 78330  8616   3 18:27 ?        00:00:00 /usr/sbin/gdm3
+root        1757       1    1761  0    4 78330  8616   2 18:27 ?        00:00:00 /usr/sbin/gdm3
+root        1765    1757    1765  0    4 43853  9796   4 18:27 ?        00:00:00 gdm-session-worker [pam/gdm-launch-environment]
+root        1765    1757    1767  0    4 43853  9796   1 18:27 ?        00:00:00 gdm-session-worker [pam/gdm-launch-environment]
+root        1765    1757    1768  0    4 43853  9796   0 18:27 ?        00:00:00 gdm-session-worker [pam/gdm-launch-environment]
+root        1765    1757    1770  0    4 43853  9796   4 18:27 ?        00:00:00 gdm-session-worker [pam/gdm-launch-environment]
+gdm         1773       1    1773  0    1  5686 12920   3 18:27 ?        00:00:00 /usr/lib/systemd/systemd --user
+root        1777       2    1777  0    1     0     0   2 18:27 ?        00:00:00 [psimon]
+gdm         1778    1773    1778  0    1  5620  3624   0 18:27 ?        00:00:00 (sd-pam)
+gdm         1796    1773    1796  0    1  1944  3400   3 18:27 ?        00:00:00 /usr/bin/mpris-proxy
+gdm         1797    1773    1797  0    3 26092 11932   2 18:27 ?        00:00:00 /usr/bin/pipewire
+gdm         1797    1773    1858  0    3 26092 11932   3 18:27 ?        00:00:00 /usr/bin/pipewire
+gdm         1797    1773    1867  0    3 26092 11932   5 18:27 ?        00:00:00 /usr/bin/pipewire
+gdm         1802    1773    1802  0    2 21923  5316   5 18:27 ?        00:00:00 /usr/bin/pipewire -c filter-chain.conf
+gdm         1802    1773    1856  0    2 21923  5316   3 18:27 ?        00:00:00 /usr/bin/pipewire -c filter-chain.conf
+gdm         1809    1773    1809  0    6 120690 17576  4 18:27 ?        00:00:00 /usr/bin/wireplumber
+gdm         1809    1773    1860  0    6 120690 17576  3 18:27 ?        00:00:00 /usr/bin/wireplumber
+gdm         1809    1773    1865  0    6 120690 17576  2 18:27 ?        00:00:00 /usr/bin/wireplumber
+gdm         1809    1773    1869  0    6 120690 17576  0 18:27 ?        00:00:00 /usr/bin/wireplumber
+gdm         1809    1773    1886  0    6 120690 17576  3 18:27 ?        00:00:00 /usr/bin/wireplumber
+gdm         1809    1773    1890  0    6 120690 17576  1 18:27 ?        00:00:00 /usr/bin/wireplumber
+gdm         1811    1773    1811  0    3 27293 10256   0 18:27 ?        00:00:00 /usr/bin/pipewire-pulse
+gdm         1811    1773    1862  0    3 27293 10256   1 18:27 ?        00:00:00 /usr/bin/pipewire-pulse
+gdm         1811    1773    1868  0    3 27293 10256   1 18:27 ?        00:00:00 /usr/bin/pipewire-pulse
+gdm         1814    1773    1814  0    1  2201  4528   4 18:27 ?        00:00:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork 
+gdm         1824    1765    1824  0    4 42720  6080   0 18:27 tty1     00:00:00 /usr/libexec/gdm-wayland-session dbus-run-session -- gnome-
+gdm         1824    1765    1834  0    4 42720  6080   2 18:27 tty1     00:00:00 /usr/libexec/gdm-wayland-session dbus-run-session -- gnome-
+gdm         1824    1765    1835  0    4 42720  6080   5 18:27 tty1     00:00:00 /usr/libexec/gdm-wayland-session dbus-run-session -- gnome-
+gdm         1824    1765    1857  0    4 42720  6080   0 18:27 tty1     00:00:00 /usr/libexec/gdm-wayland-session dbus-run-session -- gnome-
+gdm         1859    1824    1859  0    1  1355  2144   1 18:27 tty1     00:00:00 dbus-run-session -- gnome-session --autostart /usr/share/gd
+gdm         1861    1859    1861  0    1  2340  5480   4 18:27 tty1     00:00:00 dbus-daemon --nofork --print-address 4 --session
+rtkit       1863       1    1863  0    3  5465  3168   4 18:27 ?        00:00:00 /usr/libexec/rtkit-daemon
+rtkit       1863       1    1879  0    3  5465  3168   2 18:27 ?        00:00:00 /usr/libexec/rtkit-daemon
+rtkit       1863       1    1880  0    3  5465  3168   0 18:27 ?        00:00:00 /usr/libexec/rtkit-daemon
+gdm         1866    1859    1866  0    5 140142 15260  4 18:27 tty1     00:00:00 /usr/libexec/gnome-session-binary --autostart /usr/share/gd
+gdm         1866    1859    1887  0    5 140142 15260  1 18:27 tty1     00:00:00 /usr/libexec/gnome-session-binary --autostart /usr/share/gd
+gdm         1866    1859    1888  0    5 140142 15260  3 18:27 tty1     00:00:00 /usr/libexec/gnome-session-binary --autostart /usr/share/gd
+gdm         1866    1859    1889  0    5 140142 15260  4 18:27 tty1     00:00:00 /usr/libexec/gnome-session-binary --autostart /usr/share/gd
+gdm         1866    1859    1891  0    5 140142 15260  0 18:27 tty1     00:00:00 /usr/libexec/gnome-session-binary --autostart /usr/share/gd
+gdm         1906    1866    1906  0   29 1175180 225808 2 18:27 tty1    00:00:09 /usr/bin/gnome-shell
+gdm         1906    1866    1967  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1968  0   29 1175180 225808 5 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1970  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1972  0   29 1175180 225808 3 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1974  0   29 1175180 225808 2 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1975  0   29 1175180 225808 4 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1976  0   29 1175180 225808 0 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1977  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1978  0   29 1175180 225808 5 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1979  0   29 1175180 225808 5 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1980  0   29 1175180 225808 5 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    1981  0   29 1175180 225808 5 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2020  0   29 1175180 225808 0 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2026  0   29 1175180 225808 4 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2027  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2028  0   29 1175180 225808 0 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2029  0   29 1175180 225808 0 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2030  0   29 1175180 225808 0 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2031  0   29 1175180 225808 4 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2032  0   29 1175180 225808 4 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2033  0   29 1175180 225808 3 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2034  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2035  0   29 1175180 225808 4 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2036  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2037  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2040  0   29 1175180 225808 1 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2066  0   29 1175180 225808 3 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1906    1866    2381  0   29 1175180 225808 3 18:27 tty1    00:00:00 /usr/bin/gnome-shell
+gdm         1928    1773    1928  0    8 152542 7140   1 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    1929  0    8 152542 7140   5 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    1930  0    8 152542 7140   1 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    1932  0    8 152542 7140   0 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    1941  0    8 152542 7140   0 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    1949  0    8 152542 7140   4 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    1950  0    8 152542 7140   5 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1928    1773    2012  0    8 152542 7140   0 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+gdm         1933    1773    1933  0    4 77512  6104   4 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+gdm         1933    1773    1935  0    4 77512  6104   3 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+gdm         1933    1773    1936  0    4 77512  6104   5 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+gdm         1933    1773    1938  0    4 77512  6104   5 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+root        1942    1928    1942  0    1   693  1964   2 18:27 ?        00:00:00 fusermount3 -o rw,nosuid,nodev,fsname=portal,auto_unmount,s
+cups-br+    2016       1    2016  0    4 52343 20132   4 18:27 ?        00:00:00 /usr/sbin/cups-browsed
+cups-br+    2016       1    2095  0    4 52343 20132   4 18:27 ?        00:00:00 /usr/sbin/cups-browsed
+cups-br+    2016       1    2096  0    4 52343 20132   3 18:27 ?        00:00:00 /usr/sbin/cups-browsed
+cups-br+    2016       1    2097  0    4 52343 20132   5 18:27 ?        00:00:00 /usr/sbin/cups-browsed
+root        2017       1    2017  0    4 78021  7288   5 18:27 ?        00:00:00 /usr/libexec/power-profiles-daemon
+root        2017       1    2038  0    4 78021  7288   0 18:27 ?        00:00:00 /usr/libexec/power-profiles-daemon
+root        2017       1    2039  0    4 78021  7288   4 18:27 ?        00:00:00 /usr/libexec/power-profiles-daemon
+root        2017       1    2041  0    4 78021  7288   3 18:27 ?        00:00:00 /usr/libexec/power-profiles-daemon
+gdm         2068       1    2068  0    5 95411  7428   0 18:27 tty1     00:00:00 /usr/libexec/at-spi-bus-launcher
+gdm         2068       1    2069  0    5 95411  7428   1 18:27 tty1     00:00:00 /usr/libexec/at-spi-bus-launcher
+gdm         2068       1    2070  0    5 95411  7428   4 18:27 tty1     00:00:00 /usr/libexec/at-spi-bus-launcher
+gdm         2068       1    2071  0    5 95411  7428   2 18:27 tty1     00:00:00 /usr/libexec/at-spi-bus-launcher
+gdm         2068       1    2073  0    5 95411  7428   1 18:27 tty1     00:00:00 /usr/libexec/at-spi-bus-launcher
+gdm         2074    2068    2074  0    1  2188  4584   3 18:27 tty1     00:00:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-s
+gdm         2075    1906    2075  0    1 51355 60724   0 18:27 tty1     00:00:00 /usr/bin/Xwayland :1024 -rootless -noreset -accessx -core -
+gdm         2077       1    2077  0    4 42281  6920   2 18:27 tty1     00:00:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+gdm         2077       1    2079  0    4 42281  6920   3 18:27 tty1     00:00:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+gdm         2077       1    2080  0    4 42281  6920   4 18:27 tty1     00:00:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+gdm         2077       1    2081  0    4 42281  6920   0 18:27 tty1     00:00:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+colord      2078       1    2078  0    4 79733 14188   4 18:27 ?        00:00:00 /usr/libexec/colord
+colord      2078       1    2085  0    4 79733 14188   0 18:27 ?        00:00:00 /usr/libexec/colord
+colord      2078       1    2086  0    4 79733 14188   2 18:27 ?        00:00:00 /usr/libexec/colord
+colord      2078       1    2088  0    4 79733 14188   3 18:27 ?        00:00:00 /usr/libexec/colord
+gdm         2115       1    2115  0    4 77512  6192   4 18:27 tty1     00:00:00 /usr/libexec/xdg-permission-store
+gdm         2115       1    2116  0    4 77512  6192   2 18:27 tty1     00:00:00 /usr/libexec/xdg-permission-store
+gdm         2115       1    2117  0    4 77512  6192   4 18:27 tty1     00:00:00 /usr/libexec/xdg-permission-store
+gdm         2115       1    2119  0    4 77512  6192   4 18:27 tty1     00:00:00 /usr/libexec/xdg-permission-store
+gdm         2127       1    2127  0   12 683410 27872  1 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2134  0   12 683410 27872  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2135  0   12 683410 27872  2 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2136  0   12 683410 27872  5 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2137  0   12 683410 27872  4 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2138  0   12 683410 27872  4 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2139  0   12 683410 27872  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2140  0   12 683410 27872  5 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2141  0   12 683410 27872  5 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2156  0   12 683410 27872  1 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2157  0   12 683410 27872  2 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+gdm         2127       1    2160  0   12 683410 27872  3 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.Shell.Noti
+root        2128       1    2128  0    4 80311  8856   4 18:27 ?        00:00:00 /usr/libexec/upowerd
+root        2128       1    2220  0    4 80311  8856   3 18:27 ?        00:00:00 /usr/libexec/upowerd
+root        2128       1    2221  0    4 80311  8856   3 18:27 ?        00:00:00 /usr/libexec/upowerd
+root        2128       1    2226  0    4 80311  8856   3 18:27 ?        00:00:00 /usr/libexec/upowerd
+gdm         2144    1866    2144  0    5 117304 10624  5 18:27 tty1     00:00:00 /usr/libexec/gsd-sharing
+gdm         2144    1866    2163  0    5 117304 10624  0 18:27 tty1     00:00:00 /usr/libexec/gsd-sharing
+gdm         2144    1866    2164  0    5 117304 10624  0 18:27 tty1     00:00:00 /usr/libexec/gsd-sharing
+gdm         2144    1866    2165  0    5 117304 10624  1 18:27 tty1     00:00:00 /usr/libexec/gsd-sharing
+gdm         2144    1866    2169  0    5 117304 10624  3 18:27 tty1     00:00:00 /usr/libexec/gsd-sharing
+gdm         2149    1866    2149  0    5 103392 19084  2 18:27 tty1     00:00:00 /usr/libexec/gsd-wacom
+gdm         2149    1866    2195  0    5 103392 19084  5 18:27 tty1     00:00:00 /usr/libexec/gsd-wacom
+gdm         2149    1866    2196  0    5 103392 19084  3 18:27 tty1     00:00:00 /usr/libexec/gsd-wacom
+gdm         2149    1866    2204  0    5 103392 19084  3 18:27 tty1     00:00:00 /usr/libexec/gsd-wacom
+gdm         2149    1866    2212  0    5 103392 19084  0 18:27 tty1     00:00:00 /usr/libexec/gsd-wacom
+gdm         2150    1866    2150  0    5 103509 18644  4 18:27 tty1     00:00:00 /usr/libexec/gsd-color
+gdm         2150    1866    2197  0    5 103509 18644  3 18:27 tty1     00:00:00 /usr/libexec/gsd-color
+gdm         2150    1866    2198  0    5 103509 18644  3 18:27 tty1     00:00:00 /usr/libexec/gsd-color
+gdm         2150    1866    2208  0    5 103509 18644  3 18:27 tty1     00:00:00 /usr/libexec/gsd-color
+gdm         2150    1866    2216  0    5 103509 18644  5 18:27 tty1     00:00:00 /usr/libexec/gsd-color
+gdm         2153    1866    2153  0    5 103011 17592  2 18:27 tty1     00:00:00 /usr/libexec/gsd-keyboard
+gdm         2153    1866    2199  0    5 103011 17592  3 18:27 tty1     00:00:00 /usr/libexec/gsd-keyboard
+gdm         2153    1866    2200  0    5 103011 17592  3 18:27 tty1     00:00:00 /usr/libexec/gsd-keyboard
+gdm         2153    1866    2211  0    5 103011 17592  5 18:27 tty1     00:00:00 /usr/libexec/gsd-keyboard
+gdm         2153    1866    2218  0    5 103011 17592  5 18:27 tty1     00:00:00 /usr/libexec/gsd-keyboard
+gdm         2159    1866    2159  0    4 80887 11360   1 18:27 tty1     00:00:00 /usr/libexec/gsd-print-notifications
+gdm         2159    1866    2183  0    4 80887 11360   2 18:27 tty1     00:00:00 /usr/libexec/gsd-print-notifications
+gdm         2159    1866    2185  0    4 80887 11360   4 18:27 tty1     00:00:00 /usr/libexec/gsd-print-notifications
+gdm         2159    1866    2193  0    4 80887 11360   2 18:27 tty1     00:00:00 /usr/libexec/gsd-print-notifications
+gdm         2167    1866    2167  0    4 114567 7052   0 18:27 tty1     00:00:00 /usr/libexec/gsd-rfkill
+gdm         2167    1866    2178  0    4 114567 7052   4 18:27 tty1     00:00:00 /usr/libexec/gsd-rfkill
+gdm         2167    1866    2179  0    4 114567 7052   0 18:27 tty1     00:00:00 /usr/libexec/gsd-rfkill
+gdm         2167    1866    2184  0    4 114567 7052   0 18:27 tty1     00:00:00 /usr/libexec/gsd-rfkill
+gdm         2171    1866    2171  0    5 96732  8156   2 18:27 tty1     00:00:00 /usr/libexec/gsd-smartcard
+gdm         2171    1866    2186  0    5 96732  8156   4 18:27 tty1     00:00:00 /usr/libexec/gsd-smartcard
+gdm         2171    1866    2187  0    5 96732  8156   0 18:27 tty1     00:00:00 /usr/libexec/gsd-smartcard
+gdm         2171    1866    2206  0    5 96732  8156   4 18:27 tty1     00:00:00 /usr/libexec/gsd-smartcard
+gdm         2171    1866    2248  0    5 96732  8156   0 18:27 tty1     00:00:00 /usr/libexec/gsd-smartcard
+gdm         2174    1866    2174  0    5 64299  9968   3 18:27 tty1     00:00:00 /usr/libexec/gsd-datetime
+gdm         2174    1866    2191  0    5 64299  9968   1 18:27 tty1     00:00:00 /usr/libexec/gsd-datetime
+gdm         2174    1866    2192  0    5 64299  9968   5 18:27 tty1     00:00:00 /usr/libexec/gsd-datetime
+gdm         2174    1866    2194  0    5 64299  9968   2 18:27 tty1     00:00:00 /usr/libexec/gsd-datetime
+gdm         2174    1866    2244  0    5 64299  9968   1 18:27 tty1     00:00:00 /usr/libexec/gsd-datetime
+gdm         2177    1866    2177  0    5 178083 21364  5 18:27 tty1     00:00:00 /usr/libexec/gsd-media-keys
+gdm         2177    1866    2270  0    5 178083 21364  5 18:27 tty1     00:00:00 /usr/libexec/gsd-media-keys
+gdm         2177    1866    2272  0    5 178083 21364  3 18:27 tty1     00:00:00 /usr/libexec/gsd-media-keys
+gdm         2177    1866    2274  0    5 178083 21364  1 18:27 tty1     00:00:00 /usr/libexec/gsd-media-keys
+gdm         2177    1866    2283  0    5 178083 21364  3 18:27 tty1     00:00:00 /usr/libexec/gsd-media-keys
+gdm         2190    1866    2190  0    4 77588  6576   5 18:27 tty1     00:00:00 /usr/libexec/gsd-screensaver-proxy
+gdm         2190    1866    2217  0    4 77588  6576   5 18:27 tty1     00:00:00 /usr/libexec/gsd-screensaver-proxy
+gdm         2190    1866    2219  0    4 77588  6576   1 18:27 tty1     00:00:00 /usr/libexec/gsd-screensaver-proxy
+gdm         2190    1866    2224  0    4 77588  6576   4 18:27 tty1     00:00:00 /usr/libexec/gsd-screensaver-proxy
+gdm         2205    1866    2205  0    5 64420  9432   5 18:27 tty1     00:00:00 /usr/libexec/gsd-sound
+gdm         2205    1866    2259  0    5 64420  9432   0 18:27 tty1     00:00:00 /usr/libexec/gsd-sound
+gdm         2205    1866    2260  0    5 64420  9432   2 18:27 tty1     00:00:00 /usr/libexec/gsd-sound
+gdm         2205    1866    2278  0    5 64420  9432   1 18:27 tty1     00:00:00 /usr/libexec/gsd-sound
+gdm         2205    1866    2288  0    5 64420  9432   2 18:27 tty1     00:00:00 /usr/libexec/gsd-sound
+gdm         2213    1866    2213  0    5 61304  6996   2 18:27 tty1     00:00:00 /usr/libexec/gsd-a11y-settings
+gdm         2213    1866    2231  0    5 61304  6996   3 18:27 tty1     00:00:00 /usr/libexec/gsd-a11y-settings
+gdm         2213    1866    2232  0    5 61304  6996   0 18:27 tty1     00:00:00 /usr/libexec/gsd-a11y-settings
+gdm         2213    1866    2237  0    5 61304  6996   1 18:27 tty1     00:00:00 /usr/libexec/gsd-a11y-settings
+gdm         2213    1866    2289  0    5 61304  6996   5 18:27 tty1     00:00:00 /usr/libexec/gsd-a11y-settings
+gdm         2222    1866    2222  0    5 96623  8188   3 18:27 tty1     00:00:00 /usr/libexec/gsd-housekeeping
+gdm         2222    1866    2233  0    5 96623  8188   2 18:27 tty1     00:00:00 /usr/libexec/gsd-housekeeping
+gdm         2222    1866    2234  0    5 96623  8188   5 18:27 tty1     00:00:00 /usr/libexec/gsd-housekeeping
+gdm         2222    1866    2241  0    5 96623  8188   3 18:27 tty1     00:00:00 /usr/libexec/gsd-housekeeping
+gdm         2222    1866    2290  0    5 96623  8188   1 18:27 tty1     00:00:00 /usr/libexec/gsd-housekeeping
+gdm         2228    1866    2228  0    5 104002 20056  4 18:27 tty1     00:00:00 /usr/libexec/gsd-power
+gdm         2228    1866    2263  0    5 104002 20056  1 18:27 tty1     00:00:00 /usr/libexec/gsd-power
+gdm         2228    1866    2264  0    5 104002 20056  1 18:27 tty1     00:00:00 /usr/libexec/gsd-power
+gdm         2228    1866    2266  0    5 104002 20056  0 18:27 tty1     00:00:00 /usr/libexec/gsd-power
+gdm         2228    1866    2279  0    5 104002 20056  2 18:27 tty1     00:00:00 /usr/libexec/gsd-power
+gdm         2334    1906    2334  0   19 405804 105396 3 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2336  0   19 405804 105396 1 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2355  0   19 405804 105396 3 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2356  0   19 405804 105396 1 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2357  0   19 405804 105396 0 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2358  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2360  0   19 405804 105396 0 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2361  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2362  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2363  0   19 405804 105396 2 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2366  0   19 405804 105396 4 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2367  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2368  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2370  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2371  0   19 405804 105396 1 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2379  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2380  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    2386  0   19 405804 105396 5 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2334    1906    3158  0   19 405804 105396 2 18:27 tty1     00:00:00 /usr/libexec/mutter-x11-frames
+gdm         2335    1906    2335  0    4 97042 11168   0 18:27 tty1     00:00:00 ibus-daemon --panel disable -r --xim
+gdm         2335    1906    2342  0    4 97042 11168   5 18:27 tty1     00:00:00 ibus-daemon --panel disable -r --xim
+gdm         2335    1906    2343  0    4 97042 11168   1 18:27 tty1     00:00:00 ibus-daemon --panel disable -r --xim
+gdm         2335    1906    2344  0    4 97042 11168   3 18:27 tty1     00:00:00 ibus-daemon --panel disable -r --xim
+gdm         2352    2335    2352  0    4 42975  7396   1 18:27 tty1     00:00:00 /usr/libexec/ibus-memconf
+gdm         2352    2335    2365  0    4 42975  7396   0 18:27 tty1     00:00:00 /usr/libexec/ibus-memconf
+gdm         2352    2335    2369  0    4 42975  7396   5 18:27 tty1     00:00:00 /usr/libexec/ibus-memconf
+gdm         2352    2335    2373  0    4 42975  7396   1 18:27 tty1     00:00:00 /usr/libexec/ibus-memconf
+gdm         2354       1    2354  0    4 91226 63792   5 18:27 tty1     00:00:00 /usr/libexec/ibus-x11 --kill-daemon
+gdm         2354       1    2382  0    4 91226 63792   2 18:27 tty1     00:00:00 /usr/libexec/ibus-x11 --kill-daemon
+gdm         2354       1    2383  0    4 91226 63792   1 18:27 tty1     00:00:00 /usr/libexec/ibus-x11 --kill-daemon
+gdm         2354       1    2384  0    4 91226 63792   4 18:27 tty1     00:00:00 /usr/libexec/ibus-x11 --kill-daemon
+gdm         2364       1    2364  0    4 77805  7476   4 18:27 tty1     00:00:00 /usr/libexec/ibus-portal
+gdm         2364       1    2374  0    4 77805  7476   5 18:27 tty1     00:00:00 /usr/libexec/ibus-portal
+gdm         2364       1    2375  0    4 77805  7476   1 18:27 tty1     00:00:00 /usr/libexec/ibus-portal
+gdm         2364       1    2376  0    4 77805  7476   1 18:27 tty1     00:00:00 /usr/libexec/ibus-portal
+gdm         2388       1    2388  0    6 158173 17792  1 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal
+gdm         2388       1    2389  0    6 158173 17792  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal
+gdm         2388       1    2390  0    6 158173 17792  4 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal
+gdm         2388       1    2391  0    6 158173 17792  1 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal
+gdm         2388       1    2479  0    6 158173 17792  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal
+gdm         2388       1    2487  0    6 158173 17792  3 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal
+gdm         2404       1    2404  0    6 171787 39756  0 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gnome
+gdm         2404       1    2408  0    6 171787 39756  3 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gnome
+gdm         2404       1    2409  0    6 171787 39756  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gnome
+gdm         2404       1    2410  0    6 171787 39756  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gnome
+gdm         2404       1    2413  0    6 171787 39756  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gnome
+gdm         2404       1    2416  0    6 171787 39756  3 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gnome
+root        2406       1    2406  0    1  2704  6820   1 18:27 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+gdm         2438    2335    2438  0    4 42973  7392   0 18:27 tty1     00:00:00 /usr/libexec/ibus-engine-simple
+gdm         2438    2335    2442  0    4 42973  7392   4 18:27 tty1     00:00:00 /usr/libexec/ibus-engine-simple
+gdm         2438    2335    2443  0    4 42973  7392   4 18:27 tty1     00:00:00 /usr/libexec/ibus-engine-simple
+gdm         2438    2335    2444  0    4 42973  7392   5 18:27 tty1     00:00:00 /usr/libexec/ibus-engine-simple
+gdm         2440       1    2440  0   12 683396 28160  2 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2446  0   12 683396 28160  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2447  0   12 683396 28160  4 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2448  0   12 683396 28160  5 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2449  0   12 683396 28160  2 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2450  0   12 683396 28160  5 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2451  0   12 683396 28160  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2452  0   12 683396 28160  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2453  0   12 683396 28160  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2454  0   12 683396 28160  1 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2455  0   12 683396 28160  0 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2440       1    2457  0   12 683396 28160  2 18:27 tty1     00:00:00 /usr/bin/gjs -m /usr/share/gnome-shell/org.gnome.ScreenSave
+gdm         2471       1    2471  0    4 104442 14256  1 18:27 tty1     00:00:00 /usr/libexec/gsd-printer
+gdm         2471       1    2473  0    4 104442 14256  2 18:27 tty1     00:00:00 /usr/libexec/gsd-printer
+gdm         2471       1    2474  0    4 104442 14256  1 18:27 tty1     00:00:00 /usr/libexec/gsd-printer
+gdm         2471       1    2475  0    4 104442 14256  2 18:27 tty1     00:00:00 /usr/libexec/gsd-printer
+gdm         2481       1    2481  0    5 104519 24272  1 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gtk
+gdm         2481       1    2482  0    5 104519 24272  1 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gtk
+gdm         2481       1    2483  0    5 104519 24272  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gtk
+gdm         2481       1    2485  0    5 104519 24272  2 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gtk
+gdm         2481       1    2486  0    5 104519 24272  4 18:27 tty1     00:00:00 /usr/libexec/xdg-desktop-portal-gtk
+gdm         2490    1773    2490  0    5 46511  8812   2 18:27 ?        00:00:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkc
+gdm         2490    1773    2491  0    5 46511  8812   0 18:27 ?        00:00:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkc
+gdm         2490    1773    2492  0    5 46511  8812   3 18:27 ?        00:00:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkc
+gdm         2490    1773    2493  0    5 46511  8812   5 18:27 ?        00:00:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkc
+gdm         2490    1773    2494  0    5 46511  8812   4 18:27 ?        00:00:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkc
+skidaim     2501       1    2501  0    1  5663 12440   5 18:27 ?        00:00:00 /usr/lib/systemd/systemd --user
+skidaim     2502    2501    2502  0    1  5619  2340   5 18:27 ?        00:00:00 (sd-pam)
+skidaim     2515    2501    2515  0    1  1944  3320   2 18:27 ?        00:00:00 /usr/bin/mpris-proxy
+skidaim     2516    2501    2516  0    3 24823  6240   3 18:27 ?        00:00:00 /usr/bin/pipewire
+skidaim     2516    2501    2556  0    3 24823  6240   2 18:27 ?        00:00:00 /usr/bin/pipewire
+skidaim     2516    2501    2558  0    3 24823  6240   1 18:27 ?        00:00:00 /usr/bin/pipewire
+skidaim     2517    2501    2517  0    2 21923  4948   4 18:27 ?        00:00:00 /usr/bin/pipewire -c filter-chain.conf
+skidaim     2517    2501    2557  0    2 21923  4948   4 18:27 ?        00:00:00 /usr/bin/pipewire -c filter-chain.conf
+skidaim     2521    2501    2521  0    1  9784 10196   3 18:27 ?        00:00:00 /snap/snapd-desktop-integration/315/usr/bin/snapd-desktop-i
+skidaim     2522    2501    2522  0    6 100475 13100  5 18:27 ?        00:00:00 /usr/bin/wireplumber
+skidaim     2522    2501    2560  0    6 100475 13100  3 18:27 ?        00:00:00 /usr/bin/wireplumber
+skidaim     2522    2501    2561  0    6 100475 13100  1 18:27 ?        00:00:00 /usr/bin/wireplumber
+skidaim     2522    2501    2563  0    6 100475 13100  1 18:27 ?        00:00:00 /usr/bin/wireplumber
+skidaim     2522    2501    2568  0    6 100475 13100  2 18:27 ?        00:00:00 /usr/bin/wireplumber
+skidaim     2522    2501    2569  0    6 100475 13100  4 18:27 ?        00:00:00 /usr/bin/wireplumber
+skidaim     2526    2501    2526  0    3 27143  9772   4 18:27 ?        00:00:00 /usr/bin/pipewire-pulse
+skidaim     2526    2501    2559  0    3 27143  9772   1 18:27 ?        00:00:00 /usr/bin/pipewire-pulse
+skidaim     2526    2501    2565  0    3 27143  9772   1 18:27 ?        00:00:00 /usr/bin/pipewire-pulse
+skidaim     2528    2501    2528  0    1  2197  4908   2 18:27 ?        00:00:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork 
+skidaim     2608    2501    2608  0    7 133851 6832   2 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2608    2501    2615  0    7 133851 6832   0 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2608    2501    2616  0    7 133851 6832   1 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2608    2501    2618  0    7 133851 6832   3 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2608    2501    2633  0    7 133851 6832   2 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2608    2501    2635  0    7 133851 6832   5 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2608    2501    2636  0    7 133851 6832   0 18:27 ?        00:00:00 /usr/libexec/xdg-document-portal
+skidaim     2621    2501    2621  0    4 77512  6032   5 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+skidaim     2621    2501    2623  0    4 77512  6032   4 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+skidaim     2621    2501    2624  0    4 77512  6032   0 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+skidaim     2621    2501    2630  0    4 77512  6032   0 18:27 ?        00:00:00 /usr/libexec/xdg-permission-store
+root        2634    2608    2634  0    1   693  2024   2 18:27 ?        00:00:00 fusermount3 -o rw,nosuid,nodev,fsname=portal,auto_unmount,s
+skidaim     2756       1    2756  0    1   722  1808   2 18:27 ?        00:00:00 sh /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb8
+skidaim     2760    2756    2760  0   11 2968979 127084 0 18:27 ?       00:00:21 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2769  0   11 2968979 127084 4 18:27 ?       00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2770  0   11 2968979 127084 4 18:27 ?       00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2771  0   11 2968979 127084 4 18:27 ?       00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2772  0   11 2968979 127084 5 18:27 ?       00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2773  0   11 2968979 127084 0 18:27 ?       00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2786  0   11 2968979 127084 0 18:27 ?       00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2795  0   11 2968979 127084 5 18:27 ?       00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2796  0   11 2968979 127084 1 18:27 ?       00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2797  0   11 2968979 127084 0 18:27 ?       00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2760    2756    2798  0   11 2968979 127084 3 18:27 ?       00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2869    2521    2869  0    4 69775 19288   2 18:27 ?        00:00:00 /snap/snapd-desktop-integration/315/usr/bin/snapd-desktop-i
+skidaim     2869    2521    2872  0    4 69775 19288   5 18:27 ?        00:00:00 /snap/snapd-desktop-integration/315/usr/bin/snapd-desktop-i
+skidaim     2869    2521    2873  0    4 69775 19288   5 18:27 ?        00:00:00 /snap/snapd-desktop-integration/315/usr/bin/snapd-desktop-i
+skidaim     2869    2521    2874  0    4 69775 19288   1 18:27 ?        00:00:00 /snap/snapd-desktop-integration/315/usr/bin/snapd-desktop-i
+skidaim     2875    2760    2875  0   14 363882 76636  4 18:27 ?        00:00:13 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2876  0   14 363882 76636  2 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2877  0   14 363882 76636  0 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2878  0   14 363882 76636  2 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2879  0   14 363882 76636  1 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2880  0   14 363882 76636  3 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2881  0   14 363882 76636  0 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2882  0   14 363882 76636  4 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2883  0   14 363882 76636  1 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2884  0   14 363882 76636  4 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2885  0   14 363882 76636  4 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    2908  0   14 363882 76636  3 18:27 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760    7333  0   14 363882 76636  4 18:56 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2875    2760   13361  0   14 363882 76636  3 19:12 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim     2907    2875    2907  0    1  3463  4464   0 18:27 pts/3    00:00:00 /bin/bash --init-file /home/skidaim/.vscode-server/cli/serv
+root        3425       2    3425  0    1     0     0   2 18:32 ?        00:00:00 [kworker/u513:2]
+root        4212       2    4212  0    1     0     0   5 18:38 ?        00:00:16 [kworker/5:0H-kblockd]
+root        5965       2    5965  0    1     0     0   2 18:48 ?        00:00:00 [kworker/2:1-events]
+gdm         6422       1    6422  0    4 41329  5840   4 18:51 tty1     00:00:00 /usr/libexec/dconf-service
+gdm         6422       1    6423  0    4 41329  5840   2 18:51 tty1     00:00:00 /usr/libexec/dconf-service
+gdm         6422       1    6424  0    4 41329  5840   5 18:51 tty1     00:00:00 /usr/libexec/dconf-service
+gdm         6422       1    6425  0    4 41329  5840   5 18:51 tty1     00:00:00 /usr/libexec/dconf-service
+root        6446       2    6446  0    1     0     0   3 18:51 ?        00:00:04 [kworker/u512:2-events_freezable_pwr_efficient]
+skidaim     7332    2875    7332  0    1  3140  4440   4 18:56 pts/4    00:00:00 /bin/bash --init-file /home/skidaim/.vscode-server/cli/serv
+root        8060       2    8060  0    1     0     0   3 19:00 ?        00:00:00 [kworker/3:2-mm_percpu_wq]
+root        9187       2    9187  0    1     0     0   4 19:10 ?        00:00:00 [kworker/4:0-mm_percpu_wq]
+root        9252       2    9252  0    1     0     0   1 19:11 ?        00:00:00 [kworker/1:2-events]
+skidaim    13360    2875   13360  0    1  3140  5048   5 19:12 pts/5    00:00:01 /bin/bash --init-file /home/skidaim/.vscode-server/cli/serv
+root       15098       2   15098  0    1     0     0   1 19:20 ?        00:00:00 [kworker/1:0-cgroup_destroy]
+root       15939       1   15939  0    4 92507 32056   5 19:24 ?        00:00:00 /usr/libexec/fwupd/fwupd
+root       15939       1   15944  0    4 92507 32056   2 19:24 ?        00:00:00 /usr/libexec/fwupd/fwupd
+root       15939       1   15945  0    4 92507 32056   0 19:24 ?        00:00:00 /usr/libexec/fwupd/fwupd
+root       15939       1   15946  0    4 92507 32056   2 19:24 ?        00:00:00 /usr/libexec/fwupd/fwupd
+root       16349       2   16349  0    1     0     0   3 19:29 ?        00:00:00 [kworker/u512:1-events_unbound]
+root       16398       2   16398  0    1     0     0   0 19:30 ?        00:00:00 [kworker/0:0-events]
+root       16400       2   16400  0    1     0     0   0 19:30 ?        00:00:00 [kworker/0:3]
+root       16837       2   16837  0    1     0     0   4 19:34 ?        00:00:00 [kworker/4:1]
+root       16957       2   16957  0    1     0     0   2 19:35 ?        00:00:00 [kworker/u512:0-events_unbound]
+skidaim    17069    2760   17069  4   13 13792570 123584 5 19:35 ?      00:00:18 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17070  0   13 13792570 123584 5 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17071  0   13 13792570 123584 2 19:35 ?      00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17072  0   13 13792570 123584 1 19:35 ?      00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17073  0   13 13792570 123584 0 19:35 ?      00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17074  0   13 13792570 123584 4 19:35 ?      00:00:01 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17075  0   13 13792570 123584 3 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17076  0   13 13792570 123584 0 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17077  0   13 13792570 123584 0 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17078  0   13 13792570 123584 0 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17079  0   13 13792570 123584 0 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17109  0   13 13792570 123584 1 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17069    2760   17114  0   13 13792570 123584 2 19:35 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+root       17110       2   17110  0    1     0     0   5 19:35 ?        00:00:00 [kworker/5:1H]
+root       17115       2   17115  0    1     0     0   3 19:35 ?        00:00:00 [kworker/u512:4-ext4-rsv-conversion]
+root       17116       2   17116  0    1     0     0   0 19:35 ?        00:00:00 [kworker/0:2H]
+skidaim    17249   17069   17249  0   17 214937 750380 2 19:35 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17250  0   17 214937 750380 4 19:35 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17251  0   17 214937 750380 1 19:35 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17252  0   17 214937 750380 0 19:35 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17253 22   17 214937 750380 3 19:35 ?        00:01:26 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17254  1   17 214937 750380 5 19:35 ?        00:00:06 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17255 49   17 214937 750380 4 19:35 ?        00:03:15 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17259  0   17 214937 750380 4 19:35 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17354  0   17 214937 750380 2 19:35 ?        00:00:02 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17359  2   17 214937 750380 4 19:35 ?        00:00:08 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17382  4   17 214937 750380 0 19:35 ?        00:00:18 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17398  4   17 214937 750380 5 19:35 ?        00:00:17 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17933  0   17 214937 750380 4 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17934  0   17 214937 750380 4 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17935  0   17 214937 750380 3 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   17936  0   17 214937 750380 4 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17249   17069   18228  1   17 214937 750380 4 19:41 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17386   17069   17386  0    7 254653 46672  3 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17386   17069   17387  0    7 254653 46672  5 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17386   17069   17388  0    7 254653 46672  1 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17386   17069   17389  0    7 254653 46672  1 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17386   17069   17390  0    7 254653 46672  1 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17386   17069   17391  0    7 254653 46672  1 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17386   17069   17392  0    7 254653 46672  3 19:35 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+root       17485    2406   17485  0    1  4543 11880   2 19:36 ?        00:00:00 sshd-session: skidaim [priv]
+root       17487       2   17487  0    1     0     0   5 19:36 ?        00:00:00 [kworker/5:0-mm_percpu_wq]
+skidaim    17521   17485   17521  0    1  4655  7964   5 19:36 ?        00:00:01 sshd-session: skidaim@notty
+skidaim    17522   17521   17522  0    1   722  1964   0 19:36 ?        00:00:00 sh
+skidaim    17540   17522   17540  0    7 10969 17384   3 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17540   17522   17546  0    7 10969 17384   4 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17540   17522   17547  0    7 10969 17384   1 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17540   17522   17548  0    7 10969 17384   4 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17540   17522   17549  0    7 10969 17384   1 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17540   17522   17550  0    7 10969 17384   3 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17540   17522   17551  0    7 10969 17384   2 19:36 ?        00:00:00 /home/skidaim/.vscode-server/code-7d842fb85a0275a4a8e4d7e04
+skidaim    17573    2760   17573  7   13 13795118 903952 5 19:36 ?      00:00:21 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17574  0   13 13795118 903952 1 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17575  0   13 13795118 903952 2 19:36 ?      00:00:02 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17576  0   13 13795118 903952 4 19:36 ?      00:00:02 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17577  0   13 13795118 903952 0 19:36 ?      00:00:02 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17578  0   13 13795118 903952 5 19:36 ?      00:00:02 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17579  0   13 13795118 903952 4 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17580  0   13 13795118 903952 0 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17581  0   13 13795118 903952 1 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17582  0   13 13795118 903952 0 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17583  0   13 13795118 903952 0 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17597  0   13 13795118 903952 3 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17573    2760   17617  0   13 13795118 903952 5 19:36 ?      00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17584  0   13 332974 131744 3 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17585  0   13 332974 131744 1 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17586  0   13 332974 131744 0 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17587  0   13 332974 131744 2 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17588  0   13 332974 131744 3 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17589  0   13 332974 131744 4 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17590  0   13 332974 131744 3 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17591  5   13 332974 131744 4 19:36 ?        00:00:15 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17592  0   13 332974 131744 2 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17593  0   13 332974 131744 4 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17594  0   13 332974 131744 4 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17595  0   13 332974 131744 1 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17584    2760   17596  0   13 332974 131744 4 19:36 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    17756   17573   17756  0   17 282201 1072892 4 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17757  0   17 282201 1072892 0 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17758  0   17 282201 1072892 2 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17759  0   17 282201 1072892 4 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17761  6   17 282201 1072892 2 19:36 ?       00:00:19 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17762 16   17 282201 1072892 0 19:36 ?       00:00:48 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17764  0   17 282201 1072892 5 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17767  0   17 282201 1072892 1 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17848  0   17 282201 1072892 0 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17897  0   17 282201 1072892 5 19:36 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17905  8   17 282201 1072892 4 19:36 ?       00:00:25 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17907  2   17 282201 1072892 1 19:36 ?       00:00:07 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   17912 15   17 282201 1072892 4 19:37 ?       00:00:44 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   18048  0   17 282201 1072892 4 19:40 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   18049  0   17 282201 1072892 4 19:40 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   18050  0   17 282201 1072892 4 19:40 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17756   17573   18051  0   17 282201 1072892 4 19:40 ?       00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17925  0    8 1069993 69032 2 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17926  0    8 1069993 69032 2 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17927  0    8 1069993 69032 5 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17928  0    8 1069993 69032 4 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17929  0    8 1069993 69032 3 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17930  0    8 1069993 69032 4 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17931  0    8 1069993 69032 4 19:38 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    17925       1   17932  0    8 1069993 69032 1 19:38 ?        00:00:01 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+root       17937       2   17937  0    1     0     0   1 19:38 ?        00:00:00 [kworker/1:1-cgroup_destroy]
+skidaim    17938   17522   17938  0    1  2090  2140   5 19:39 ?        00:00:00 sleep 180
+root       17945       2   17945  0    1     0     0   1 19:40 ?        00:00:00 [kworker/1:3]
+skidaim    18009   17573   18009  0    7 254274 60092  1 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18009   17573   18013  0    7 254274 60092  2 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18009   17573   18014  0    7 254274 60092  4 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18009   17573   18015  0    7 254274 60092  1 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18009   17573   18016  0    7 254274 60092  0 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18009   17573   18017  0    7 254274 60092  0 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18009   17573   18018  0    7 254274 60092  5 19:40 ?        00:00:00 /home/skidaim/.vscode-server/cli/servers/Stable-7d842fb85a0
+skidaim    18040       1   18040  0    8 1067762 60560 1 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18041  0    8 1067762 60560 3 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18042  0    8 1067762 60560 0 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18043  0    8 1067762 60560 5 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18044  0    8 1067762 60560 5 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18045  0    8 1067762 60560 1 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18046  0    8 1067762 60560 1 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18040       1   18090  0    8 1067762 60560 5 19:40 ?        00:00:00 /home/skidaim/.vscode-server/extensions/ms-vscode.cpptools-
+skidaim    18260   13360   18260 99    1  3237  4868   2 19:41 pts/5    00:00:00 ps -FALL
