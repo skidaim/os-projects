@@ -2538,10 +2538,16 @@ __latent_entropy struct task_struct *copy_process(
 			p->exit_signal = -1;
 		else
 			p->exit_signal = current->group_leader->exit_signal;
+#ifdef CONFIG_GRR_SCHED
+		p->grr_group = current->group_leader->grr_group;
+#endif
 	} else {
 		p->real_parent = current;
 		p->parent_exec_id = current->self_exec_id;
 		p->exit_signal = args->exit_signal;
+#ifdef CONFIG_GRR_SCHED
+		p->grr_group = current->grr_group;
+#endif
 	}
 
 	klp_copy_process(p);

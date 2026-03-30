@@ -719,6 +719,17 @@ struct sched_dl_entity {
 #endif
 };
 
+
+#ifdef CONFIG_GRR_SCHED
+#define GRR_DEFAULT      1
+#define GRR_PERFORMANCE  2
+#define GRR_TIMESLICE (100 * HZ / 1000)
+struct sched_grr_entity {
+	struct list_head    run_list;    /* node in grr_rq queue */
+	unsigned int        time_slice;  /* remaining time slice */
+};
+#endif
+
 #ifdef CONFIG_UCLAMP_TASK
 /* Number of utilization clamp buckets (shorter alias) */
 #define UCLAMP_BUCKETS CONFIG_UCLAMP_BUCKETS_COUNT
@@ -845,6 +856,10 @@ struct task_struct {
 	struct sched_rt_entity		rt;
 	struct sched_dl_entity		dl;
 	struct sched_dl_entity		*dl_server;
+#ifdef CONFIG_GRR_SCHED
+	struct sched_grr_entity grr;
+	int grr_group;
+#endif
 #ifdef CONFIG_SCHED_CLASS_EXT
 	struct sched_ext_entity		scx;
 #endif

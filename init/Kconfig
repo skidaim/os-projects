@@ -2079,3 +2079,11 @@ config ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
 # <asm/syscall_wrapper.h>.
 config ARCH_HAS_SYSCALL_WRAPPER
 	def_bool n
+
+config GRR_SCHED
+       bool "Group Round-Robin Scheduler Class"
+       help
+         This option enables the Group Round-Robin Scheduling class,
+         and makes it the default scheduler for the system. I can't
+	 think of a single reason why checkpatch would want me to
+	 write a "paragraph" (>= 4 lines)

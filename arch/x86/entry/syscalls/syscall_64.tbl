@@ -390,6 +390,8 @@
 464	common	getxattrat		sys_getxattrat
 465	common	listxattrat		sys_listxattrat
 466	common	removexattrat		sys_removexattrat
+467	common	sched_assign_ncores_to_group	sys_sched_assign_ncores_to_group
+468	common	sched_assign_process_to_group	sys_sched_assign_process_to_group
 
 #
 # Due to a historical design error, certain syscalls are numbered differently

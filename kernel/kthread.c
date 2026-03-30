@@ -438,8 +438,11 @@ static int kthread(void *_create)
 	 * The new thread inherited kthreadd's priority and CPU mask. Reset
 	 * back to default in case they have been changed.
 	 */
+#ifdef CONFIG_GRR_SCHED
+	sched_setscheduler_nocheck(current, SCHED_GRR, &param);
+#else
 	sched_setscheduler_nocheck(current, SCHED_NORMAL, &param);
-
+#endif
 	/* OK, tell user we're spawned, wait for stop or wakeup */
 	__set_current_state(TASK_UNINTERRUPTIBLE);
 	create->result = current;

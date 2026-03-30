@@ -69,6 +69,7 @@
 #include <linux/wait_bit.h>
 #include <linux/workqueue_api.h>
 #include <linux/delayacct.h>
+#include <linux/mmu_context.h>
 
 #include <trace/events/power.h>
 #include <trace/events/sched.h>
@@ -78,6 +79,9 @@
 struct rq;
 struct cfs_rq;
 struct rt_rq;
+#ifdef CONFIG_GRR_SCHED
+struct grr_rq;
+#endif
 struct sched_group;
 struct cpuidle_state;
 
@@ -207,6 +211,11 @@ static inline int fair_policy(int policy)
 	return normal_policy(policy) || policy == SCHED_BATCH;
 }
 
+static inline int grr_policy(int policy)
+{
+	return IS_ENABLED(CONFIG_GRR_SCHED) && policy == SCHED_GRR;
+}
+
 static inline int rt_policy(int policy)
 {
 	return policy == SCHED_FIFO || policy == SCHED_RR;
@@ -219,13 +228,22 @@ static inline int dl_policy(int policy)
 
 static inline bool valid_policy(int policy)
 {
-	return idle_policy(policy) || fair_policy(policy) ||
+#ifdef CONFIG_GRR_SCHED
+	if (policy == SCHED_GRR)
+		return true;
+#endif
+	return idle_policy(policy) || fair_policy(policy) || grr_policy(policy) ||
 		rt_policy(policy) || dl_policy(policy);
 }
 
 static inline int task_has_idle_policy(struct task_struct *p)
 {
 	return idle_policy(p->policy);
+}
+
+static inline int task_has_grr_policy(struct task_struct *p)
+{
+	return grr_policy(p->policy);
 }
 
 static inline int task_has_rt_policy(struct task_struct *p)
@@ -836,6 +854,14 @@ static inline bool rt_rq_is_runnable(struct rt_rq *rt_rq)
 	return rt_rq->rt_queued && rt_rq->rt_nr_running;
 }
 
+#ifdef CONFIG_GRR_SCHED
+struct grr_rq {
+	unsigned int	nr_running;  /* # GRR tasks on this CPU */
+	struct list_head	queue;           /* FIFO queue of GRR entities */
+	unsigned long	next_balance;  /* Next time to balance GRR tasks */
+};
+#endif
+
 /* Deadline class' related fields in a runqueue */
 struct dl_rq {
 	/* runqueue is an rbtree, ordered by deadline */
@@ -1135,6 +1161,11 @@ struct rq {
 	struct cfs_rq		cfs;
 	struct rt_rq		rt;
 	struct dl_rq		dl;
+#ifdef CONFIG_GRR_SCHED
+	struct grr_rq   grr;
+	bool grr_default;
+	bool grr_performance;
+#endif
 #ifdef CONFIG_SCHED_CLASS_EXT
 	struct scx_rq		scx;
 #endif
@@ -2541,6 +2572,9 @@ extern struct sched_class __sched_class_lowest[];
 extern const struct sched_class stop_sched_class;
 extern const struct sched_class dl_sched_class;
 extern const struct sched_class rt_sched_class;
+#ifdef CONFIG_GRR_SCHED
+extern const struct sched_class grr_sched_class;
+#endif
 extern const struct sched_class fair_sched_class;
 extern const struct sched_class idle_sched_class;
 
@@ -2602,10 +2636,18 @@ extern struct task_struct *pick_task_idle(struct rq *rq);
 #define SCA_MIGRATE_ENABLE	0x04
 #define SCA_USER		0x08
 
+#ifdef CONFIG_GRR_SCHED
+extern void cpu_to_group(int cpu, int group);
+extern void cpu_to_both_groups(int cpu);
+#endif
+
 #ifdef CONFIG_SMP
 
 extern void update_group_capacity(struct sched_domain *sd, int cpu);
 
+#ifdef CONFIG_GRR_SCHED
+extern void grr_load_balance_trigger(struct rq *rq);
+#endif
 extern void sched_balance_trigger(struct rq *rq);
 
 extern int __set_cpus_allowed_ptr(struct task_struct *p, struct affinity_context *ctx);
@@ -2714,6 +2756,7 @@ extern void update_max_interval(void);
 extern void init_sched_dl_class(void);
 extern void init_sched_rt_class(void);
 extern void init_sched_fair_class(void);
+extern void init_sched_grr_class(void);
 
 extern void resched_curr(struct rq *rq);
 extern void resched_curr_lazy(struct rq *rq);
@@ -3186,6 +3229,9 @@ static inline void resched_latency_warn(int cpu, u64 latency) { }
 extern void init_cfs_rq(struct cfs_rq *cfs_rq);
 extern void init_rt_rq(struct rt_rq *rt_rq);
 extern void init_dl_rq(struct dl_rq *dl_rq);
+#ifdef CONFIG_GRR_SCHED
+extern void init_grr_rq(struct grr_rq *grr_rq);
+#endif
 
 extern void cfs_bandwidth_usage_inc(void);
 extern void cfs_bandwidth_usage_dec(void);

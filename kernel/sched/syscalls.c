@@ -863,7 +863,11 @@ EXPORT_SYMBOL_GPL(sched_set_fifo_low);
 void sched_set_normal(struct task_struct *p, int nice)
 {
 	struct sched_attr attr = {
+#ifdef CONFIG_GRR_SCHED
+		.sched_policy = SCHED_GRR,
+#else
 		.sched_policy = SCHED_NORMAL,
+#endif
 		.sched_nice = nice,
 	};
 	WARN_ON_ONCE(sched_setattr_nocheck(p, &attr) != 0);
@@ -1496,6 +1500,7 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
 	case SCHED_BATCH:
 	case SCHED_IDLE:
 	case SCHED_EXT:
+	case SCHED_GRR:
 		ret = 0;
 		break;
 	}
@@ -1524,6 +1529,7 @@ SYSCALL_DEFINE1(sched_get_priority_min, int, policy)
 	case SCHED_BATCH:
 	case SCHED_IDLE:
 	case SCHED_EXT:
+	case SCHED_GRR:
 		ret = 0;
 	}
 	return ret;
