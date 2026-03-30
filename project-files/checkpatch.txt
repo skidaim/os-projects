@@ -1,0 +1,30 @@
+skidaim@skidaims-vm:~/struct-task_force$ git diff refs/tags/v6.14  | ./scripts/checkpatch.pl
+WARNING: Do not crash the kernel unless it is absolutely unavoidable--use WARN_ON_ONCE() plus recovery code (if feasible) instead of BUG() or variants
+#328: FILE: kernel/sched/core.c:8530:
++       BUG_ON(!sched_class_above(&rt_sched_class, &grr_sched_class));
+
+WARNING: Do not crash the kernel unless it is absolutely unavoidable--use WARN_ON_ONCE() plus recovery code (if feasible) instead of BUG() or variants
+#329: FILE: kernel/sched/core.c:8531:
++       BUG_ON(!sched_class_above(&grr_sched_class, &fair_sched_class));
+
+WARNING: ENOSYS means 'invalid syscall nr' and nothing else
+#710: FILE: kernel/sched/core.c:11095:
++       return -ENOSYS;
+
+WARNING: ENOSYS means 'invalid syscall nr' and nothing else
+#715: FILE: kernel/sched/core.c:11100:
++       return -ENOSYS;
+
+WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+#719: 
+new file mode 100644
+
+total: 0 errors, 5 warnings, 1157 lines checked
+
+NOTE: For some of the reported defects, checkpatch may be able to
+      mechanically convert to the typical style using --fix or --fix-inplace.
+
+Your patch has style problems, please review.
+
+NOTE: If any of the errors are false positives, please report
+      them to the maintainer, see CHECKPATCH in MAINTAINERS.
