@@ -1,0 +1,281 @@
+The goal of this assignment is to expose the page table of POSIX processes’ running on Linux X86_64 and arm64 into user-space, in a flat table format.
+
+Introduction
+Virtual memory is a layer of abstraction that translates virtual addresses into physical addresses.
+
+Not only does the underlying Operating System (OS) memory management subsystem provide each process with the illusion of a continuous virtual address space, but it also ensures that faults in one process’s address space do not affect others. Furthermore, virtual memory simplifies program development, linking, loading, and execution because it provides the illusion of abundant, contiguous memory; even though physical memory is, in fact, limited in size and may be fragmented. Finally, virtual memory helps use physical memory resources with frugality because the OS memory management subsystem employs various optimizations, such as demand paging and shared read-only pages via Copy-On-Write (COW).
+
+Overall, the memory management subsystem is complicated in its implementation because it includes many architecture-specific portions with various parts dependent on hardware support for fast address translations. However, conceptually it is just an address translation level of indirection, which translates groups of system-wide fixed-size (typically, 4KB in Linux) contiguous virtual addresses, called virtual pages, into the respective physical pages, called physical page frames. Therefore, since each POSIX process has its own virtual address space, it also has its own process-private page translation index—called a page table—which resides in the kernel-space, and is managed by the OS.
+
+Page tables. Page tables are not laid out as a flat index in the kernel because that would be an impractical waste of space, especially given the enormous size of the address spaces supported by modern 64-bit processors. Instead, page tables are organized as multi-level hierarchical indices. The base of the top-level (outer index) is held in a privileged processor register, each level contains pointers to the bases of the next level index and an architecture-specific subset of bits of the virtual address is used along with the respective index base to get a pointer to the base of the next level index, and so on.
+
+Page Table Entries (PTEs). Particularly, the leaf pages at the lowest level of the page table index contain pointers, called Page Table Entries (PTEs). The PTEs, along with other bits of information, also contain a pointer to the base of the actual physical page frames, called Page Frame Number (PFN), of the corresponding physical page and the lowest bits of the virtual address define the offset inside the target PFN. See here for a detailed overview of the multilevel page table hierarchy implemented by the Linux kernel.
+
+Translation Lookaside Buffers (TLBs). To speed up address translation, modern Central Processor Units (CPUs) are equipped with a crucial hardware component, called the Translation Lookaside Buffer (TLB), which keeps a subset of the most recent virtual-to-physical translations and helps avoid expensive multilevel page walks. Specifically, every time the processor produces a virtual address, if its physical translation is present in the TLB and the respective permissions match the intended memory access, the translation happens core-locally, within a fraction of a nanosecond. If the translation is not present in the TLB, a dedicated hardware component, called the Page Walker, walks the multilevel page table hierarchy up to the leaf level, and if the reached PTE is present with permissions matching the intended memory access, then, the respective physical addess is obtained, the TLB is updated, and the hardware resumes executing without any software involvement.
+
+Page Faults. If the translation has invalid permissions (e.g., compared to the intended memory access) either on the TLB or on the page table; or, it is not present neither on the page table nor on the TLB, the the hardware cannot proceed and it must notify the OS via an exception of type fault, called a page fault, to intervene in order to allocate a new physical page to back the required virtual-to-physical translation, or to swap in a previously swapped-out page, or to update a specially-marked translation accordingly.
+
+The above describes, in a nutshell, how virtual-to-physical address translations occur and involve intimate hardware and software cooperation, with the multilevel page table index being at the core of it all.
+
+Page Fault Handling in Linux
+Demand paging implemented via page fault handling is the core idea behind how OSes are constructively lazy and defer actually allocating a physical page frame to back a virtual page, until it cannot be deferred any further.
+
+Demand Paging. Demand paging allows programs to run with the speed of CPU caches while having a memory footprint as large as the size of storage: Pages are allocated on demand only when absolutely needed, while, on conditions of high memory pressure the physical pages backing unnused virtual pages of a program are temporarily offloaded, swapped out, in storage devices, and be brought back in (swapped in), on-demand, when needed.
+
+The working set model for program behavior. Fundamentally, the reason why demand paging works well in practice is because the “hot” virtual pages of most programs where the vast majority of memory accesses occur—also called “the working set” (inspired by one of the seminal papers on OS memory managemen, by Peter J. Denning in 1968)—fit in main memory, and remain resident there without the need for expensive swap-in operations on slow storage devices.
+
+To properly implement page fault handling, the OS keeps track of the layout of the address space of each process with respect to mapped virtual memory ranges, such as those on static segments that are added by the loader, or those on dynamic segments that are added transparently by the kernel (e.g., when the stack of a process is expanded up to a reasonable limit) as well as those that are requested from user programs (e.g., via the POSIX mmap system call).
+
+Particularly in Linux, the address space of each process is being kept track of in the field mm_struct of the struct task_struct of all tasks comprising each process.
+
+Every time a page fault occurs the page fault handler needs to quickly traverse all the VMAs of the respective address space in order to locate the one whose range contains the faulting virtual address (placed in a privileged register automatically by the hardware when a page fault occurs). Therefore, VMAs are stored on a B-Tree-like data structure, called a Maple Tree which is optimized for CPU-cache-friendly storing on non-overlapping ranges as well as fast look-ups.
+
+Once the respective VMA is located, the OS has all it needs to decide if it should allocate a new physical page from the list of available physical pages and add a new translation entry in the page table index pointing to it, or update an existing translation, or swap in a previously swapped-out page; or to send a signal, such as a SIGSEGV, to the faulting thread of the respective process, if an invalid memory access occured.
+
+Exposing Kernel-space Memory to User-space
+In the Linux kernel, it is possible to map, or more precisely, “expose” kernel-space memory to user-space, and eliminate the overhead of copying user-space information into kernel-space, and vice versa.
+
+For example, with the use of vmf_insert_pfn(…), a single physical page frame mapped to a kernel-space virtual address can be exposed to user-space, by being added to a user-space vma with a user-space page-aligned starting virtual address. Such functionality will be particularly useful in the context of this programming assignment, where the goal is to expose kernel-space-mapped memory holding a process’s last-level page table entries (PTEs) to the user-space, into a flat table format.
+
+Defining a Custom Fault Handler
+Unfortunately, pre-allocating a per-process in-kernel flat table that will hold PTE entries of a 48-bit virtual address space (supported by most 64-bit processor architectures), and then exposing it to user-space is not an option.
+
+Assuming 4KB pages, this will require 2 ^ (48-12) * 8 bytes = 2^39 bytes = 512 GiB. Instead, we need to be creative and take into consideration the fact that the virtual address space of any process is mostly sparse.
+
+Being constructively lazy is the answer, as usual. Since very few memory ranges within a 48-bit virtual address space are actually used at any given point in time, consequently, very few PTE entries are actually populated with values pointing to physical page frames; while the rest are just unused. Therefore, a myriad of unmapped virtual pages whose respective translations have unpopulated PTEs can all be backed with a single zeroed-out physical page. See the respective my_zero_pfn(…) Linux kernel macro.
+
+To leverage the above insight in exposing a flat page table in user-space, what you need to do is define a custom page fault handler applicable on the memory where the exposed flat table will live, such that when an access to position n of the exposed flat page table (called ept, for ease) occurs, the custom fault handler walks the actual multilevel page table index of the process until the physical page frame containing the corresponding PTE entry is identified and returned (as if a look up for the translation of virtual page n is taking place); unless some intermediate level of the multi-level hierarchy is not present, in which case, the walking stops early.
+
+For this task, you may find useful the macros p?d_offset(...), used in various places in /mm. In fact, if done right, the walking will be only a few lines of clean and intuitive code.
+
+Since your code must work on both X86_64 and arm64 processor architectures, you must implement an architecture-independent ept_fault handler in /mm/ept.c; which, if needed, could use architecture-specific helper functions, defined in appropriate locations in the Linux kernel source code tree.
+
+Depending on your implementation, be particularly careful at the last inner level of your walk (i.e., the pmd level) which points to leaf physical page frames where the PTE pointers to target PFN reside, because there is some discrepancy in the pmd_pfn(...) helper function implementation between X86_64 and arm64. Take this recommendation very seriously, as it costed us a few nights wasted on debugging because the vanilla pmd_pfn(...) does not do what one would expect on arm64.
+
+Exposing Memory with a Custom Fault Handler in User-Space (80%)
+Finally, you will need to expose the flat page table with the custom fault handler in user-space.
+
+First, the Linux kernel allows the association of specific callbacks for a predefined set of operations in VMAs via the vm_operations_struct interface. These callbacks can be, and are, invoked by kernel functions operating on VMAs, such as, say, the mmap(…) system call. Second, the Linux kernel allows registering miscellaneous character devices that support the mmap system call. The two aforementioned mechanisms effectively allow user-space processes to create a virtual memory mapping whose behavior is controlled by a custom set of vm_operations_struct callbacks. This is all you need!
+
+The skeleton of your /mm/ept.c file must include a vm_operations_struct defining, at least, the respective fault callback as well as any other one you may deem necessary, but do not go too overboard.
+
+...
+static const struct vm_operations_struct ept_vm_ops = {
+    .fault = ept_fault,
+    ...
+};
+
+Most importantly, it must include the registration of a miscellaneous character device that supports the mmap’ing of VMAs associated with the custom ept_vm_ops.
+
+
+...
+
+static int ept_mmap(struct file *file, struct vm_area_struct *vma)
+{
+    ...
+    vma->vm_ops = &ept_vm_ops;
+    ...
+}
+
+static const struct file_operations ept_fops = {
+    .owner = THIS_MODULE,
+    .mmap = ept_mmap,
+    ...
+};
+
+static struct miscdevice ept_dev = {
+    .minor = MISC_DYNAMIC_MINOR,
+    .fops  = &ept_fops,
+    .name  = "ept",
+    ...
+};
+
+...
+
+module_init(ept_init);
+module_exit(ept_exit);
+
+Implementation Mandate
+Using the above design is not just an implementation suggestion or soft recommendation, but rather a mandate. Otherwise, editing Linux kernel code of the memory management subsystem, which manipulates VMAs that are protected by spinlocks and semaphores, will not only be an insurmountable mess you will put yourselves into, but it will also make it almost impossible for us to reliably test all corner cases with deadlock potential and grade submissions reliably.
+
+Further points for consideration:
+
+Only system administrators (root users) must be able to map /dev/ept into their processes’ address space.
+
+Make sure to do proper cleanup and do not leave stale mappings behind invalid / removed PTEs.
+
+Let your implementation shamelessly ignore any functionality related to huge pages.
+
+Importantly: Ensuring that the translations visible via the exposed page table are in-sync with the actual page table of a process must be done by modifying the kernel-internal pmd_install(...) and __pte_alloc(...) functions, such that they both include an unsigned long address argument. The latter will be the virtual address for which a new PTE entry is about to be allocated, and you must implement logic such that the translation of the exposed page table pointing to the respective physical page frame is cleared—both in memory and in the TLB—in order for a page fault to occur upon the next access so that the custom fault handler to be invoked and update the exposed translation accordingly. Note that __pte_alloc(...) is invoked in many places, here and there, and this will introduce a few changes.
+
+Testing and Demonstration (20%)
+Paste the following code in a file named test1.c, fill in all missing parts (noted with “…”), and do not edit anything else. Then, compile and execute it on a patched kernel, and paste your results in a file named test1.txt.
+
+// SPDX-License-Identifier: GPL-2.0-only
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <time.h>
+#include <unistd.h>
+
+#define STR_SIZE (1ULL << 8)
+#define EPT_SIZE (1ULL << (...))
+#define MEM_SIZE (STR_SIZE << (...))
+
+#define PERR_RET(cond, str) \
+    do {                    \
+        if (cond) {         \
+            perror(str);    \
+            return 1;       \
+        }                   \
+    } while (0)             \
+
+void decode(char *msg, char *ptr, unsigned long *ept) {
+    ...
+}
+
+void encode(char *msg, char *mem) {
+    for (size_t i = 0; i < STR_SIZE; i++)
+        for (int j = 0; j < 8; j++)
+            if (msg[i] & (1 << j))
+                mem[(8 * i + j) << 12] = 0x10;
+}
+
+void encode2(char *msg, char *mem) {
+    for (size_t i = 0; i < STR_SIZE; i++) {
+        for (int j = 0; j < 8; j++) {
+            mem[(8 * i + j) << 12] = 0x10;
+            if ((msg[i] & (1 << j)) == 0)
+                munmap(&mem[(8 * i + j) << 12], 1ULL << 12);
+        }
+    }
+}
+
+void init(char *msg, size_t len) {
+    srand(time(NULL));
+    for (int i = 0; i < len; i++)
+        msg[i] = rand() % 255;
+}
+
+
+int main(void) {
+    char buf[STR_SIZE] = {0}, buf2[STR_SIZE] = {0}, buf3[STR_SIZE] = {0};
+
+    char *ptr1 = mmap(NULL, MEM_SIZE, ..., ..., -1, 0);
+    PERR_RET(ptr1 == MAP_FAILED, "mmap");
+
+    char *ptr2 = mmap(NULL, MEM_SIZE, ..., ..., -1, 0);
+    PERR_RET(ptr2 == MAP_FAILED, "mmap");
+
+    int fd_ept = open("/dev/ept", O_RDONLY);
+    PERR_RET(fd_ept < 0, "open");
+
+    unsigned long *ept = mmap(NULL, EPT_SIZE, PROT_READ, MAP_PRIVATE, fd_ept, 0);
+    PERR_RET(ept == MAP_FAILED, "mmap");
+    PERR_RET(close(fd_ept), "close");
+
+    PERR_RET(mprotect(ept, EPT_SIZE, PROT_NONE), "mprotect");
+    PERR_RET(mprotect(ept, EPT_SIZE, PROT_READ), "mprotect");
+
+    init(buf, STR_SIZE);
+
+    encode(buf, ptr1);
+    decode(buf2, ptr1, ept);
+
+    encode2(buf, ptr2);
+    decode(buf3, ptr2, ept);
+
+    if (memcmp(buf, buf2, STR_SIZE) || memcmp(buf, buf3, STR_SIZE))
+        printf("error\n");
+    else
+        printf("success\n");
+
+    PERR_RET(munmap(ept, EPT_SIZE), "munmap");
+    PERR_RET(munmap(ptr1, MEM_SIZE), "munmap");
+    PERR_RET(munmap(ptr2, MEM_SIZE), "munmap");
+
+    return 0;
+}
+
+Paste the following code in a file named test2.c, fill in all missing parts (noted with “…”), and do not edit anything else. Then, compile and execute it on a patched kernel, and paste your results in a file named test2.txt.
+
+// SPDX-License-Identifier: GPL-2.0-only
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <sys/mman.h>
+#include <time.h>
+#include <unistd.h>
+
+#define X ...
+
+#define PERR_RET(cond, str) \
+    do {                    \
+        if (cond) {         \
+            perror(str);    \
+            return 1;       \
+        }                   \
+    } while (0)             \
+
+static inline uint64_t clock_gettime_ns() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+}
+
+int main(void) {
+    uint64_t start_time, end_time;
+
+    int ept_fd = open("/dev/ept", O_RDONLY);
+    PERR_RET(ept_fd < 0, "open");
+
+    unsigned long *ept = mmap(NULL, 1ULL << 39, PROT_READ, MAP_PRIVATE, ept_fd, 0);
+    PERR_RET(ept == MAP_FAILED, "mmap");
+    PERR_RET(close(ept_fd), "close");
+
+    char *p = mmap(NULL, 1ULL << X, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
+    PERR_RET(p == MAP_FAILED, "mmap");
+    madvise(p, 1ULL << X, MADV_NOHUGEPAGE);
+
+    start_time = clock_gettime_ns();
+    unsigned long pte = ept[(unsigned long)p >> 12];
+    end_time = clock_gettime_ns();
+    printf("1. Time: %lu (ns) -> <0x%lx>\n", end_time - start_time, pte);
+
+    start_time = clock_gettime_ns();
+    pte = ept[(unsigned long)p >> 12];
+    end_time = clock_gettime_ns();
+    printf("2. Time: %lu (ns) -> <0x%lx>\n", end_time - start_time, pte);
+
+    p[0] = 'C';
+    start_time = clock_gettime_ns();
+    pte = ept[(unsigned long)p >> 12];
+    end_time = clock_gettime_ns();
+    printf("3. Time: %lu (ns) -> <0x%lx>\n", end_time - start_time, pte);
+
+    start_time = clock_gettime_ns();
+    pte = ept[(unsigned long)p >> 12];
+    end_time = clock_gettime_ns();
+    printf("4. Time: %lu (ns) -> <0x%lx>\n", end_time - start_time, pte);
+
+    PERR_RET(munmap(p, 1ULL << X), "munmap");
+    PERR_RET(munmap(ept, 1ULL << 39), "munmap");
+    return 0;
+}
+
+Questions.
+
+Q1: Do you understand what the program of test1.c is trying to do? Briefly explain.
+
+Q2: Can you fill in the missing portions of test1.c indicated with ..., and especially the implementation of the decode(...) function? Please do so.
+
+Q3: Does the execution of the respective test1 executable give you a “success” message? If it hopefully does, explain why.
+
+Q4: Do you understand what will happen under the covers on an ept-patched kernel executing the program of test2.c? Briefly explain, step by step, what will happen in the exposed flat table as well as in the default page table index of the running process, before and after each printf.
+
+Q5: What is the relationship of the time printed in the access time latencies printed by the four printf statements of test2.c for different values of X, including 5, 10, 15, and 20? Do you observe any significant difference on any access(es) compared to others? And for what values, if any? Briefly explain why this happens. (Append the results of the derived executables, for the four different values of X, in test2.txt—only results; conversation and answers to the questions go exclusively to the README.txt.)
+
+this is os project 3. make sure you fully digest the problem statement and understand the assignment (no need to provide answers)
